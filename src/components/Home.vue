@@ -22,16 +22,40 @@
     <button v-on:click="searchJourneys">
       go
     </button>
+
+    <div>
+      <p>Number of results : {{this.results.length}}</p>
+      <div v-for="itinerary in this.results" class="itinerary">
+        <div>Départ: {{moment(itinerary.startTime).format('LLL')}}</div>
+        <div>Arrivée: {{moment(itinerary.endTime).format('LLL')}}</div>
+        <Duration :data="itinerary.duration" />
+        <div>{{itinerary.transfers}} changement(s)</div>
+
+        <div>Étapes</div>
+        <div v-for="leg in itinerary.legs">
+          <LegWalk v-if="leg.mode === 'WALK'" :leg="leg"></LegWalk>
+          <LegBus v-if="leg.mode === 'BUS'" :leg="leg"></LegBus>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import VueGoogleAutocomplete from 'vue-google-autocomplete';
 import axios from 'axios';
 import moment from 'moment';
 
+import LegWalk from '@/components/LegWalk';
+import LegBus from '@/components/LegBus';
+
 export default {
   name: 'Home',
+  data: function () {
+    return {
+      results: [],
+    };
+  },
   methods: {
     /**
     * When the location is found
@@ -50,19 +74,30 @@ export default {
       const result = await axios.post('http://localhost:1323/trip', {
         from: "47.20808979999999,-1.5364250000000084", // this.from,
         to: "47.2129612,-1.5623385000000098", // this.to,
-        leaveAt: moment().format('HH:mma'),
-        date: moment().format('MM-DD-YYYY'),
+        leaveAt: moment().add(0.5, 'days').format('HH:mma'),
+        date: moment().add(1, 'day').format('MM-DD-YYYY'),
       });
+
+      this.results = result.data.plan.itineraries || [];
+      console.log('"this, r', this.results, result);
     }
   },
   components: {
     VueGoogleAutocomplete,
+    LegWalk,
+    LegBus,
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.itinerary {
+  border: 1px solid black;
+  padding: 2rem;
+  text-align: center;
+}
 
 .address-input {
   min-width: 250px;
