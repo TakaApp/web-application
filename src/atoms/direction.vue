@@ -1,5 +1,5 @@
 <template>
-  <div class="place-container">
+  <div class="direction-container">
     <div class="icon"></div>
     <div>{{data}}</div>
   </div>
