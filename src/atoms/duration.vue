@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <span>
     {{duration(data)}}
-  </div>
+  </span>
 </template>
 
 <script>
@@ -12,7 +12,10 @@ export default {
     duration: (durationInSeconds) => {
       const date = new Date(null);
       date.setSeconds(durationInSeconds);
-      return `Durée: ${date.toISOString().substr(11, 5)}`;
+      if (durationInSeconds <= 60 * 59) {
+         return `${date.toISOString().substr(14, 2)}min`;
+      }
+      return `${date.toISOString().substr(11, 5)}min`;
     },
   },
 };
