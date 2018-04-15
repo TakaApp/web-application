@@ -26,12 +26,7 @@
     <div>
       <p>Nombre de résultats : {{this.results.length}}</p>
       <div v-for="itinerary in this.results" class="itinerary">
-        <div>Départ: {{moment(itinerary.startTime).format('LLL')}}</div>
-        <div>Arrivée: {{moment(itinerary.endTime).format('LLL')}}</div>
-        <Duration :data="itinerary.duration" />
-        <div>{{itinerary.transfers}} changement(s)</div>
-
-        <div>Étapes</div>
+        <JourneySummary :itinerary="itinerary" />
         <div class="legs">
           <div v-for="(leg, index) in itinerary.legs">
             <LegWalk v-if="leg.mode === 'WALK'" :leg="leg" :index="index"></LegWalk>
@@ -50,6 +45,8 @@ import moment from 'moment';
 
 import LegWalk from '@/components/LegWalk';
 import LegBus from '@/components/LegBus';
+
+import JourneySummary from '@/components/JourneySummary';
 
 export default {
   name: 'Home',
@@ -88,6 +85,7 @@ export default {
     VueGoogleAutocomplete,
     LegWalk,
     LegBus,
+    JourneySummary,
   },
 };
 </script>
