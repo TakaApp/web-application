@@ -9,8 +9,8 @@
       <div class="end-time"><Hour :data="leg.endTime" /></div>
     </div>
     <div class="leg-description">
-      <div>Marcher <Duration :data="leg.duration" /></div>
-      <div><Distance :data="leg.distance" /></div>
+      <div>Marcher <Distance :data="leg.distance" /></div>
+      <div><Duration :data="leg.duration" /></div>
     </div>
   </div>
 </template>
