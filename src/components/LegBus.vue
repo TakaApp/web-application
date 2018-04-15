@@ -18,13 +18,19 @@
       </div>
       <div class="end-time"><Hour :data="leg.endTime" /></div>
     </div>
-    <div class="description">
-      <div class="leg-description">
-        <div>> {{leg.headSign}}</div>
+    <div class="leg-description">
+      <div v-if="index === 0" class="leg-description-item">
+        <b><Place :data="leg.from" /></b>
+      </div>
+      <div class="leg-description-item">
+        <div><b><Direction :data="leg.headSign" /></b></div>
         <div><Duration :data="leg.duration" /></div>
       </div>
-      <div class="leg-description">
+      <div class="leg-description-item">
         <div>{{leg.to.stopSequence - leg.from.stopSequence}} arrêts</div>
+      </div>
+      <div class="leg-description-item">
+        <b><Place :data="leg.to" /></b>
       </div>
     </div>
   </div>
@@ -34,7 +40,7 @@
 
 export default {
   name: 'LegBus',
-  props: ['leg'],
+  props: ['leg', 'index'],
 };
 </script>
 
@@ -43,22 +49,6 @@ export default {
 .start-time {
   color: #cc2936;
   font-weight: bolder;
-}
-
-.description {
-  flex: 7;
-  min-height: 150px;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid black;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-.leg-description {
-  flex: 1;
-  border: none;
-  padding-left: 0;
-  padding-right: 0;
 }
 
 .bus {

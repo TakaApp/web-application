@@ -31,7 +31,7 @@ export default {
 .leg-description {
   flex: 7;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   border: 1px solid black;
@@ -39,6 +39,16 @@ export default {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+.leg-description-item {
+  width: 100%;
+  text-align: left;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .leg-container {
   display: flex;
   flex-direction: row;

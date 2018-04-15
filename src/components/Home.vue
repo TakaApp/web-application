@@ -24,7 +24,7 @@
     </button>
 
     <div>
-      <p>Number of results : {{this.results.length}}</p>
+      <p>Nombre de résultats : {{this.results.length}}</p>
       <div v-for="itinerary in this.results" class="itinerary">
         <div>Départ: {{moment(itinerary.startTime).format('LLL')}}</div>
         <div>Arrivée: {{moment(itinerary.endTime).format('LLL')}}</div>
@@ -32,9 +32,9 @@
         <div>{{itinerary.transfers}} changement(s)</div>
 
         <div>Étapes</div>
-        <div v-for="leg in itinerary.legs">
-          <LegWalk v-if="leg.mode === 'WALK'" :leg="leg"></LegWalk>
-          <LegBus v-if="leg.mode === 'BUS'" :leg="leg"></LegBus>
+        <div v-for="(leg, index) in itinerary.legs">
+          <LegWalk v-if="leg.mode === 'WALK'" :leg="leg" :index="index"></LegWalk>
+          <LegBus v-if="leg.mode === 'BUS'" :leg="leg" :index="index"></LegBus>
         </div>
       </div>
     </div>
