@@ -47,7 +47,6 @@ export default {
 <style scoped>
 
 .start-time {
-  color: #cc2936;
   font-weight: bolder;
 }
 

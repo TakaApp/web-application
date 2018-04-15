@@ -11,6 +11,11 @@ export default {
 </script>
 
 <style>
+
+html {
+  background-color: #fafafa;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -26,7 +31,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid black;
+  border-right: 1px solid hsla(0, 0%, 0%, 0.2);
 }
 .leg-description {
   flex: 7;
@@ -34,7 +39,6 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid black;
 
   padding-left: 1rem;
   padding-right: 1rem;

@@ -32,9 +32,11 @@
         <div>{{itinerary.transfers}} changement(s)</div>
 
         <div>Étapes</div>
-        <div v-for="(leg, index) in itinerary.legs">
-          <LegWalk v-if="leg.mode === 'WALK'" :leg="leg" :index="index"></LegWalk>
-          <LegBus v-if="leg.mode === 'BUS'" :leg="leg" :index="index"></LegBus>
+        <div class="legs">
+          <div v-for="(leg, index) in itinerary.legs">
+            <LegWalk v-if="leg.mode === 'WALK'" :leg="leg" :index="index"></LegWalk>
+            <LegBus v-if="leg.mode === 'BUS'" :leg="leg" :index="index"></LegBus>
+          </div>
         </div>
       </div>
     </div>
@@ -94,9 +96,20 @@ export default {
 <style scoped>
 
 .itinerary {
-  border: 1px solid black;
-  padding: 2rem;
   text-align: center;
+
+  max-width: 500px;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+  background-color: #FFF;
+}
+
+.legs {
+  border-top: 1px solid hsla(0, 0%, 0%, 0.2);
+  margin: 0 auto;
+  width: 100%;
 }
 
 .address-input {
