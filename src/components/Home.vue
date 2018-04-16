@@ -29,8 +29,18 @@
         <JourneySummary :itinerary="itinerary" />
         <div class="legs">
           <div v-for="(leg, index) in itinerary.legs">
-            <LegWalk v-if="leg.mode === 'WALK'" :leg="leg" :index="index"></LegWalk>
-            <LegBus v-if="leg.mode === 'BUS'" :leg="leg" :index="index"></LegBus>
+            <LegWalk
+              v-if="leg.mode === 'WALK'"
+              :leg="leg"
+              :index="index"
+              :last="index === itinerary.legs.length - 1"
+            />
+            <LegBus
+              v-if="leg.mode === 'BUS'"
+              :leg="leg"
+              :index="index"
+              :last="index === itinerary.legs.length - 1"
+            />
           </div>
         </div>
       </div>
@@ -73,7 +83,7 @@ export default {
       const result = await axios.post('http://localhost:1323/trip', {
         from: "47.20808979999999,-1.5364250000000084", // this.from,
         to: "47.2129612,-1.5623385000000098", // this.to,
-        leaveAt: moment().add(0.5, 'days').format('HH:mma'),
+        leaveAt: moment().add(0.75, 'days').format('HH:mm'),
         date: moment().add(1, 'day').format('MM-DD-YYYY'),
       });
 
@@ -101,6 +111,7 @@ export default {
   margin-bottom: 2rem;
 
   box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+  border-radius: 4px;
   background-color: #FFF;
 }
 

@@ -1,6 +1,12 @@
 <template>
   <div class="leg-container">
-    <div class="leg-illustration">
+    <div
+      class="leg-illustration"
+      :style="{
+        paddingTop: index === 0 ? '2rem' : 0,
+        paddingBottom: last ? '2rem' : 0,
+      }"
+    >
       <div  v-if="index === 0" class="start-time"><Hour :data="leg.startTime" /></div>
       <div class="icon"></div>
       <div class="dot">•</div>
@@ -8,7 +14,13 @@
       <div class="dot mb">•</div>
       <div class="end-time"><Hour :data="leg.endTime" /></div>
     </div>
-    <div class="leg-description">
+    <div
+      class="leg-description"
+      :style="{
+        paddingTop: index === 0 ? '2rem' : 0,
+        paddingBottom: last ? '2rem' : 0,
+      }"
+    >
       <div class="leg-description-item">
         <b v-if="index === 0"><Place :data="leg.from" /></b>
       </div>
@@ -27,7 +39,7 @@
 
 export default {
   name: 'LegWalk',
-  props: ['leg', 'index'],
+  props: ['leg', 'index', 'last'],
 };
 </script>
 

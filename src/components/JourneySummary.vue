@@ -29,7 +29,12 @@ export default {
 <style scoped>
 
 .journey-summary {
-  background-color: #424242;
+  background-color: #4c4177;
+  background-image: linear-gradient(315deg, #4c4177 0%, #2a5470 74%);
+
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+
   color: #FFFFFFFA;
 
   display: flex;
@@ -39,6 +44,7 @@ export default {
 }
 
 .journey-details {
+  flex: 7;
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -49,6 +55,7 @@ export default {
   align-content: center;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 .duration {
   color: #cc2936;
@@ -56,6 +63,8 @@ export default {
 }
 
 .journey-departure {
+  flex: 1;
+
   text-align: left;
   padding: 1rem;
 }
@@ -71,7 +80,6 @@ export default {
   flex-direction: row;
 
   align-items: baseline;
-  line-height: 2.5rem;
 }
 
 </style>

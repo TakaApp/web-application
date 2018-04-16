@@ -10,6 +10,8 @@
             :style="{
               backgroundColor: `#${leg.routeColor}`,
               color: `#${leg.routeTextColor}`,
+              paddingTop: index === 0 ? '2rem' : 0,
+              paddingBottom: last ? '2rem' : 0,
             }"
           >
             {{leg.route}}
@@ -40,7 +42,7 @@
 
 export default {
   name: 'LegBus',
-  props: ['leg', 'index'],
+  props: ['leg', 'index', 'last'],
 };
 </script>
 
