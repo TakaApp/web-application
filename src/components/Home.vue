@@ -83,8 +83,8 @@ export default {
     */
     searchJourneys: async function () {
       const result = await axios.post('http://localhost:1323/trip', {
-        from: "47.20808979999999,-1.5364250000000084", // this.from,
-        to: "47.2129612,-1.5623385000000098", // this.to,
+        from: this.from || '47.20808979999999,-1.5364250000000084',
+        to: this.from || '47.2129612,-1.5623385000000098',
         leaveAt: moment().add(15, 'minutes').format('HH:mm'),
         date: moment().format('MM-DD-YYYY'),
       });
