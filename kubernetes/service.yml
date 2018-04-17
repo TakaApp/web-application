@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: taka-webapp-svc
+  labels:
+    app: taka-webapp
+spec:
+  selector:
+    app: taka-webapp
+  type: NodePort
+  ports:
+  - name: taka-web-svc
+    port: 8080
+    targetPort: 3000
