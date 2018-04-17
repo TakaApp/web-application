@@ -5,6 +5,7 @@
   "author": "Aksels Ledins <aksels.ledins@gmail.com>",
   "private": true,
   "scripts": {
+    "prod": "node production-server.js",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
@@ -15,6 +16,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "compression": "^1.7.2",
+    "express": "^4.16.3",
     "moment": "^2.22.0",
     "vue": "^2.5.2",
     "vue-google-autocomplete": "^1.1.0",
