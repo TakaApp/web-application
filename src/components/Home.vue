@@ -82,7 +82,7 @@ export default {
     * Call the api for results
     */
     searchJourneys: async function () {
-      const result = await axios.post('http://localhost:1323/trip', {
+      const result = await axios.post('http://taka-api.aksels.io/trip', {
         from: this.from || '47.20808979999999,-1.5364250000000084',
         to: this.from || '47.2129612,-1.5623385000000098',
         leaveAt: moment().add(15, 'minutes').format('HH:mm'),
