@@ -34,12 +34,14 @@
               :leg="leg"
               :index="index"
               :last="index === itinerary.legs.length - 1"
+              :first="index === 0"
             />
             <LegBus
               v-if="leg.mode === 'BUS'"
               :leg="leg"
               :index="index"
               :last="index === itinerary.legs.length - 1"
+              :first="index === 0"
             />
           </div>
         </div>
@@ -83,8 +85,8 @@ export default {
       const result = await axios.post('http://localhost:1323/trip', {
         from: "47.20808979999999,-1.5364250000000084", // this.from,
         to: "47.2129612,-1.5623385000000098", // this.to,
-        leaveAt: moment().add(0.75, 'days').format('HH:mm'),
-        date: moment().add(1, 'day').format('MM-DD-YYYY'),
+        leaveAt: moment().add(15, 'minutes').format('HH:mm'),
+        date: moment().format('MM-DD-YYYY'),
       });
 
       this.results = result.data.plan.itineraries || [];

@@ -3,26 +3,34 @@
     <div class="journey-departure">
       <div class="journey-departure-label">Départ dans</div>
       <div class="departure-minutes-left-container">
-        <div class="departure-minutes-left">42</div>
+        <div class="departure-minutes-left">{{getMinutesLeftBeforeStart()}}</div>
         <div>min</div>
       </div>
     </div>
     <div class="journey-details">
       <div class="journey-duration">
-        <div>Durée: </div>
+        <div class="journee-duration-label">Durée:</div>
         <div class="duration"><Duration :data="itinerary.duration" /></div>
-        <div>•</div>
+        <div class="dot">&nbsp;•&nbsp;</div>
         <div>{{moment(itinerary.endTime).format('HH:mm')}}</div>
       </div>
-      <div>{{itinerary.transfers}} changement(s)</div>
     </div>
   </div>
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   name: 'JourneySummary',
   props: ['itinerary'],
+  methods: {
+    getMinutesLeftBeforeStart() {
+      const diffInMs = Math.abs(new Date() - new Date(this.itinerary.startTime));
+      const diffInS = Math.round(diffInMs / 1000 / 60);
+      return diffInS;
+    }
+  }
 };
 </script>
 
@@ -54,11 +62,17 @@ export default {
   flex-direction: row;
   align-content: center;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
 }
+.journee-duration-label {
+  margin-right: .5rem;
+}
+
+.dot {
+  margin: 0 .5rem;
+}
+
 .duration {
-  color: #cc2936;
   font-weight: bolder;
 }
 
@@ -74,6 +88,7 @@ export default {
 }
 .departure-minutes-left {
   font-size: 2.5rem;
+  font-weight: bolder;
 }
 .departure-minutes-left-container {
   display: flex;

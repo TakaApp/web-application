@@ -39,7 +39,7 @@
 
 export default {
   name: 'LegWalk',
-  props: ['leg', 'index', 'last'],
+  props: ['leg', 'index', 'last', 'first'],
 };
 </script>
 

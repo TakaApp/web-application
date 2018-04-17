@@ -17,7 +17,7 @@ html {
 }
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -51,6 +51,10 @@ html {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+
+.leg-description-item .duration {
+  color: #4c4177;
 }
 
 .leg-container {

@@ -1,7 +1,9 @@
 <template>
   <div class="direction-container">
     <div class="icon"></div>
-    <div>{{data}}</div>
+    <div class="text-container">
+      <p>{{data}}</p>
+    </div>
   </div>
 </template>
 
@@ -14,22 +16,35 @@ export default {
 
 <style scoped>
 
+  .text-container {
+    padding-top: 4px;
+  }
+  .text-container p {
+    margin: 0;
+  }
+
   .direction-container {
     display: flex;
     flex-direction: row;
+
+    align-items: center;
+    justify-content: flex-start;
+
+    line-height: 1.5em;
+    height: 1.5em;
   }
 
   .icon {
-    height: .85rem;
-    width: .85rem;
+    width: .7rem;
     background-image: url(../assets/icons/direction.png);
     background-repeat: no-repeat;
 
     background-size: contain;
     background-position: center center;
-    align-self: center;
 
     margin-right: .5rem;
+
+    height: 1.5em;
   }
 
 </style>

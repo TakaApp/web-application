@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span class="duration">
     {{duration(data)}}
   </span>
 </template>
