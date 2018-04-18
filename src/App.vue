@@ -12,8 +12,13 @@ export default {
 
 <style>
 
-html {
+* {
+  font-family: 'Comfortaa', cursive !important;
+}
+
+html, body {
   background-color: #fafafa;
+  margin: 0;
 }
 
 #app {
