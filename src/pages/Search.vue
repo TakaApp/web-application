@@ -7,25 +7,28 @@
         :onFromUpdate="onFromUpdate"
         :onToUpdate="onToUpdate"
       />
-      <p>Nombre de résultats : {{this.results.length}}</p>
-      <div v-for="itinerary in this.results" class="itinerary">
-        <JourneySummary :itinerary="itinerary" />
-        <div class="legs">
-          <div v-for="(leg, index) in itinerary.legs">
-            <LegWalk
-              v-if="leg.mode === 'WALK'"
-              :leg="leg"
-              :index="index"
-              :last="index === itinerary.legs.length - 1"
-              :first="index === 0"
-            />
-            <LegBus
-              v-if="leg.mode === 'BUS'"
-              :leg="leg"
-              :index="index"
-              :last="index === itinerary.legs.length - 1"
-              :first="index === 0"
-            />
+      <div v-if="loading"><small>Chargement...</small></div>
+      <div v-if="!loading && !firstRun">
+        <p>Nombre de résultats : {{results.length}}</p>
+        <div v-for="itinerary in results" class="itinerary">
+          <JourneySummary :itinerary="itinerary" />
+          <div class="legs">
+            <div v-for="(leg, index) in itinerary.legs">
+              <LegWalk
+                v-if="leg.mode === 'WALK'"
+                :leg="leg"
+                :index="index"
+                :last="index === itinerary.legs.length - 1"
+                :first="index === 0"
+              />
+              <LegBus
+                v-if="leg.mode === 'BUS'"
+                :leg="leg"
+                :index="index"
+                :last="index === itinerary.legs.length - 1"
+                :first="index === 0"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -63,6 +66,8 @@ export default {
     return {
       results: [],
 
+      firstRun: true,
+      loading: false,
       from: this.from,
       to: this.to,
 
@@ -101,14 +106,25 @@ export default {
     * Call the api for results
     */
     async searchJourneys() {
-      const result = await axios.post('http://localhost:1323/trip', {
-        from: this.from || '47.20808979999999,-1.5364250000000084',
-        to: this.to || '47.2129612,-1.5623385000000098',
-        leaveAt: moment().add(15, 'minutes').format('HH:mm'),
-        date: moment().format('MM-DD-YYYY'),
-      });
+      this.results = [];
+      this.loading = true;
+      this.error = null;
+      this.firstRun = false;
 
-      this.results = result.data.plan.itineraries || [];
+      try {
+        const result = await axios.post('http://localhost:1323/trip', {
+          from: this.from || '47.20808979999999,-1.5364250000000084',
+          to: this.to || '47.2129612,-1.5623385000000098',
+          leaveAt: moment().add(15, 'minutes').format('HH:mm'),
+          date: moment().format('MM-DD-YYYY'),
+        });
+        this.results = result.data.plan.itineraries || [];
+      } catch (error) {
+        this.error = error.message;
+      } finally {
+        this.loading = false;
+      }
+
     },
   },
   components: {
