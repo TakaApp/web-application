@@ -6,7 +6,7 @@ metadata:
     app: taka-webapp
   namespace: default
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: taka-webapp
@@ -21,10 +21,13 @@ spec:
         app: taka-webapp
     spec:
       containers:
-      - image: gcr.io/k8s-aksels/github-takaapp-web-application:v0.3.1
+      - image: gcr.io/k8s-aksels/github-takaapp-web-application:v0.4
         imagePullPolicy: Always
         name: frontend-shortener
-        resources: {}
+        resources:
+          requests:
+            cpu: 20m
+            memory: 55M
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
