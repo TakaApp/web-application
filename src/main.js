@@ -2,6 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import moment from 'moment';
+import L from 'leaflet';
+
+import 'leaflet/dist/leaflet.css';
 
 import App from './App';
 import router from './router';
@@ -12,6 +15,14 @@ import Distance from './atoms/distance';
 import Hour from './atoms/hour';
 import Place from './atoms/place';
 import Direction from './atoms/direction';
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+});
 
 Vue.config.productionTip = false;
 
