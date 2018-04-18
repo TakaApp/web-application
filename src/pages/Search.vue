@@ -10,6 +10,7 @@
       <div v-if="loading"><small>Chargement...</small></div>
       <div v-if="!loading && !firstRun">
         <p>Nombre de résultats : {{results.length}}</p>
+
         <div v-for="itinerary in results" class="itinerary">
           <JourneySummary :itinerary="itinerary" />
           <div class="legs">
@@ -36,9 +37,11 @@
     <div class="map">
       <l-map ref="map" style="height: 100vh" :zoom="zoom" v-bind:center="center">
         <l-tile-layer :url="url"></l-tile-layer>
+        <l-polyline v-for="step in trip" :key="step.id" :lat-lngs="step.latlngs" :color="step.color" />
 
-        <l-marker v-if="!!startMarker" v-bind:lat-lng="startMarker"></l-marker>
-        <l-marker v-if="!!endMarker" v-bind:lat-lng="endMarker"></l-marker>
+        <l-marker v-if="!!startMarker" :lat-lng="startMarker"></l-marker>
+        <l-marker v-if="!!endMarker" :lat-lng="endMarker"></l-marker>
+
       </l-map>
     </div>
 
@@ -48,7 +51,7 @@
 <script>
 
 import L from 'leaflet';
-import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import { LMap, LTileLayer, LMarker, LPolyline } from 'vue2-leaflet';
 
 import axios from 'axios';
 import moment from 'moment';
@@ -60,10 +63,14 @@ import LegBus from '@/components/LegBus';
 
 import JourneySummary from '@/components/JourneySummary';
 
+import polyUtil from 'polyline-encoded';
+
+
 export default {
   name: 'Home',
   data() {
     return {
+      selectedItinerary: 0,
       results: [],
 
       firstRun: true,
@@ -73,7 +80,7 @@ export default {
 
 
       center: this.center || L.latLng(47.209136, -1.547149),
-
+      trip: [],
 
       startMarker: null,
       endMarker: null,
@@ -118,6 +125,18 @@ export default {
           leaveAt: moment().add(15, 'minutes').format('HH:mm'),
           date: moment().format('MM-DD-YYYY'),
         });
+        const pu = polyUtil;
+        const legs = result.data.plan.itineraries[this.selectedItinerary].legs;
+        const polyLines = legs.map((leg, index) => {
+          const latlngs = polyUtil.decode(leg.legGeometry.points);
+          return {
+            id: `${leg.routeId}${index}`,
+            color: leg.routeColor ? `#${leg.routeColor}` : 'green',
+            latlngs,
+          }
+        });
+        this.trip = polyLines;
+
         this.results = result.data.plan.itineraries || [];
       } catch (error) {
         this.error = error.message;
@@ -137,6 +156,7 @@ export default {
     LMap,
     LTileLayer,
     LMarker,
+    LPolyline,
   },
 };
 </script>
