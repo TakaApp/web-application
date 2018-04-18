@@ -16,6 +16,9 @@ import Hour from './atoms/hour';
 import Place from './atoms/place';
 import Direction from './atoms/direction';
 
+// eslint-disable-next-line
+console.log('%cVersion 0.4', 'background: #222; color: #bada55');
+
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
