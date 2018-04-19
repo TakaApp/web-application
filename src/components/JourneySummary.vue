@@ -19,8 +19,6 @@
 </template>
 
 <script>
-import moment from 'moment';
-
 export default {
   name: 'JourneySummary',
   props: ['itinerary'],
@@ -29,8 +27,8 @@ export default {
       const diffInMs = Math.abs(new Date() - new Date(this.itinerary.startTime));
       const diffInS = Math.round(diffInMs / 1000 / 60);
       return diffInS;
-    }
-  }
+    },
+  },
 };
 </script>
 
