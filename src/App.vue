@@ -16,6 +16,19 @@ export default {
   font-family: 'Comfortaa', cursive !important;
 }
 
+/* fancy scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 html, body {
   background-color: #fafafa;
   margin: 0;
