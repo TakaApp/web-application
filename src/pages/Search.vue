@@ -165,7 +165,7 @@ small {
 }
 
 .search-form {
-  flex: 2;
+  width: 408px;
   height: 100vh;
 
   overflow-y: scroll;

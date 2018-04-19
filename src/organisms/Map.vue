@@ -72,7 +72,7 @@ export default {
 .map {
   background-color: #FFF;
   height: 100vh;
-  flex: 3;
+  flex: 1;
   overflow-x: auto;
 }
 
