@@ -2,10 +2,14 @@
   <div class="main-container">
     <div class="search-form">
       <h1>nantes<small>.cool</small></h1>
+
       <SearchForm
-        :onSearch="searchJourneys"
+        :debug="debug"
         :onFromUpdate="onFromUpdate"
         :onToUpdate="onToUpdate"
+
+        :timeParameter="timeParameter"
+        v-on:onChangeTimeParameter="onChangeTimeParameter"
       />
       <div v-if="loading"><small>Chargement...</small></div>
       <div class="results" v-if="!loading && !firstRun">
@@ -56,8 +60,10 @@ export default {
 
       firstRun: true,
       loading: false,
+
       from: this.from,
       to: this.to,
+      timeParameter: this.timeParameter || 'leaveAt',
 
       trip: [],
 
@@ -66,6 +72,25 @@ export default {
     };
   },
   methods: {
+    debug() {
+      this.from = '47.20808979999999,-1.5364250000000084';
+      this.to = '47.2129612,-1.5623385000000098';
+      this.startMarker = {
+        id: 'start',
+        latLng: L.latLng(47.20808979999999, -1.5364250000000084),
+      };
+      this.endMarker = {
+        id: 'end',
+        latLng: L.latLng(47.2129612, -1.5623385000000098),
+      };
+      this.searchJourneys();
+    },
+    onChangeTimeParameter(value) {
+      this.timeParameter = value;
+      if (this.to && this.from && value === 'leaveNow') {
+        this.searchJourneys();
+      }
+    },
     toggleItinerary(index) {
       const newCollapsedState = {};
       const newState = !this.collapsed[index];
@@ -89,6 +114,10 @@ export default {
         latLng: L.latLng(latLng.latitude, latLng.longitude),
       };
       this.center = L.latLng(latLng.latitude, latLng.longitude);
+
+      if (this.to) {
+        this.searchJourneys();
+      }
     },
     onToUpdate(latLng) {
       this.to = `${latLng.latitude},${latLng.longitude}`;
@@ -98,6 +127,10 @@ export default {
         latLng: L.latLng(latLng.latitude, latLng.longitude),
       };
       this.center = L.latLng(latLng.latitude, latLng.longitude);
+
+      if (this.from) {
+        this.searchJourneys();
+      }
     },
     getTrip(itineraryId) {
       if (itineraryId === -1) {
@@ -122,12 +155,12 @@ export default {
         };
       });
       this.trip = polyLines;
-      console.log('this.trip', this.trip);
     },
     /**
     * Call the api for results
     */
     async searchJourneys() {
+      this.trip = [];
       this.results = [];
       this.loading = true;
       this.error = null;
