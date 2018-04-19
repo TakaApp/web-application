@@ -21,7 +21,7 @@ spec:
         app: taka-webapp
     spec:
       containers:
-      - image: gcr.io/k8s-aksels/github-takaapp-web-application:v0.7
+      - image: gcr.io/k8s-aksels/github-takaapp-web-application:v0.8.1
         imagePullPolicy: Always
         name: frontend-shortener
         resources:
