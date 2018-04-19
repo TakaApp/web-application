@@ -19,6 +19,8 @@ export default {
 button {
   padding: .5rem .25rem;
   background-color: #8fcccb;
+  color: rgba(255, 255, 255, 1);
+  font-size: 1rem;
   font-weight: bold;
   border: none;
   cursor: pointer;
