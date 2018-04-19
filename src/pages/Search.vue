@@ -10,6 +10,12 @@
 
         :timeParameter="timeParameter"
         v-on:onChangeTimeParameter="onChangeTimeParameter"
+
+        :date="date"
+        v-on:onChangeDate="onChangeDate"
+
+        :time="time"
+        v-on:onChangeTime="onChangeTime"
       />
       <div v-if="loading"><small>Chargement...</small></div>
       <div class="results" v-if="!loading && !firstRun">
@@ -64,7 +70,8 @@ export default {
       from: this.from,
       to: this.to,
       timeParameter: this.timeParameter || 'leaveAt',
-
+      date: new Date(),
+      time: `${moment().get('hour')}:${moment().get('minutes')}`,
       trip: [],
 
       startMarker: null,
@@ -84,6 +91,13 @@ export default {
         latLng: L.latLng(47.2129612, -1.5623385000000098),
       };
       this.searchJourneys();
+    },
+    onChangeDate(value) {
+      this.date = value;
+    },
+    onChangeTime(value) {
+      console.log('onchangetime', value);
+      this.time = value;
     },
     onChangeTimeParameter(value) {
       this.timeParameter = value;

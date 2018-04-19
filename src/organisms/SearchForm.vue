@@ -18,18 +18,37 @@
     <div class="options">
       <div class="options-selector">
         <div class="select">
-          <select
+          <el-select
             :value="timeParameter"
-            @change="event => { $emit('onChangeTimeParameter', event.target.value) }"
+            @input="value => { $emit('onChangeTimeParameter', value) }"
           >
-            <option value="leaveNow">Partir maintenant</option>
-            <option value="leaveAt">Partir à</option>
-            <option value="arriveAt">Arriver à</option>
-          </select>
+            <el-option value="leaveNow" label="Partir maintenant" />
+            <el-option value="leaveAt" label="Partir à" />
+            <el-option value="arriveAt" label="Arriver à" />
+          </el-select>
         </div>
       </div>
       <div v-if="timeParameter === 'leaveAt'" class="date-options">
-
+        <div class="date-picker">
+          <el-date-picker
+            type="date"
+            :value="date"
+            placeholder="Date"
+            v-on:input="value => { $emit('onChangeDate', value) }"
+          />
+        </div>
+        <div class="hour-picker">
+          <el-time-select
+            :value="time"
+            :picker-options="{
+              start: '00:00',
+              step: '00:15',
+              end: '23:45',
+            }"
+            placeholder="Heure"
+            v-on:input="value => { $emit('onChangeTime', value) }"
+          />
+        </div>
       </div>
     </div>
 
@@ -45,7 +64,6 @@
 </template>
 
 <script>
-
 import GoogleAutocompleteInput from '@/atoms/GoogleAutocompleteInput';
 import Button from '@/atoms/Button';
 
@@ -58,6 +76,12 @@ export default {
 
     'timeParameter',
     'onChangeTimeParameter',
+
+    'date',
+    'onChangeDate',
+
+    'time',
+    'onChangeTime',
   ],
   data() {
     return {
@@ -121,63 +145,32 @@ export default {
 }
 
 
-/* Reset Select */
-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  appearance: none;
-  outline: 0;
-  box-shadow: none;
-  border: 0 !important;
-  background: transparent;
-  background-image: none;
-}
-/* Custom Select */
 .select {
-  position: relative;
-  display: block;
-  width: 13rem;
-  height: 1.5rem;
-  line-height: 1.5rem;
-  background: transparent;
-  overflow: hidden;
-  border-bottom: 1px solid rgba(255, 255, 255, .95);
-}
-select {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0 0 0 .5em;
-  color: #fff;
-  cursor: pointer;
-}
-select::-ms-expand {
-  display: none;
-}
-/* Arrow */
-.select::after {
-  content: '\25BC';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  padding: 0 1em;
-  pointer-events: none;
-}
-/* Transition */
-.select:hover::after {
-  color: #f39c12;
-}
-.select::after {
-  -webkit-transition: .25s all ease;
-  -o-transition: .25s all ease;
-  transition: .25s all ease;
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  margin-bottom: .5rem;
 }
 
-option {
-  color: #000;
-  background-color: #FFF;
+.date-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.date-picker, .hour-picker {
+  display: flex;
+  flex: 1;
+}
+.date-picker {
+  margin-right: 4px;
+}
+.hour-picker {
+  margin-left: 4px;
+}
+.el-input {
+  display: flex;
+  flex: 1;
+  width: 100%;
 }
 
 
