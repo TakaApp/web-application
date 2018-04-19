@@ -11,10 +11,10 @@
       <div v-if="!loading && !firstRun">
         <p>Nombre de résultats : {{results.length}}</p>
 
-        <div v-for="itinerary in results" class="itinerary">
+        <div v-for="(itinerary, index) in results" v-bind:key="index" class="itinerary">
           <JourneySummary :itinerary="itinerary" />
           <div class="legs">
-            <div v-for="(leg, index) in itinerary.legs">
+            <div v-for="(leg, index) in itinerary.legs" v-bind:key="leg.startTime">
               <LegWalk
                 v-if="leg.mode === 'WALK'"
                 :leg="leg"
@@ -35,13 +35,18 @@
       </div>
     </div>
     <div class="map">
-      <l-map ref="map" style="height: 100vh" :zoom="zoom" v-bind:center="center">
+      <l-map ref="map" style="height: 100vh" :zoom.sync="zoom" :center.sync="center">
         <l-tile-layer :url="url"></l-tile-layer>
-        <l-polyline v-for="step in trip" :key="step.id" :lat-lngs="step.latlngs" :color="step.color" />
+        <l-polyline
+          v-for="step in trip"
+          v-bind:key="step.id"
+          :lat-lngs="step.latlngs"
+          :color="step.color"
+          :weight="7"
+        />
 
-        <l-marker v-if="!!startMarker" :lat-lng="startMarker"></l-marker>
-        <l-marker v-if="!!endMarker" :lat-lng="endMarker"></l-marker>
-
+        <l-marker v-if="!!startMarker" :lat-lng="startMarker" :draggable="false" />
+        <l-marker v-if="!!endMarker" :lat-lng="endMarker" :draggable="false" />
       </l-map>
     </div>
 
@@ -88,7 +93,7 @@ export default {
       // map style
       url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
       // seems like a good value
-      zoom: 13,
+      zoom: this.zoom || 13,
       // because we support the community
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>',
     };
@@ -98,16 +103,14 @@ export default {
     onFromUpdate(latLng) {
       this.from = `${latLng.latitude},${latLng.longitude}`;
 
-      const leafletObject = L.latLng(latLng.latitude, latLng.longitude);
-      this.startMarker = leafletObject;
-      this.center = leafletObject;
+      this.startMarker = L.latLng(latLng.latitude, latLng.longitude);
+      this.center = L.latLng(latLng.latitude, latLng.longitude);
     },
     onToUpdate(latLng) {
       this.to = `${latLng.latitude},${latLng.longitude}`;
 
-      const leafletObject = L.latLng(latLng.latitude, latLng.longitude);
-      this.endMarker = leafletObject;
-      this.center = leafletObject;
+      this.endMarker = L.latLng(latLng.latitude, latLng.longitude);
+      this.center = L.latLng(latLng.latitude, latLng.longitude);
     },
     /**
     * Call the api for results
@@ -125,7 +128,6 @@ export default {
           leaveAt: moment().add(15, 'minutes').format('HH:mm'),
           date: moment().format('MM-DD-YYYY'),
         });
-        const pu = polyUtil;
         const legs = result.data.plan.itineraries[this.selectedItinerary].legs;
         const polyLines = legs.map((leg, index) => {
           const latlngs = polyUtil.decode(leg.legGeometry.points);
@@ -133,7 +135,7 @@ export default {
             id: `${leg.routeId}${index}`,
             color: leg.routeColor ? `#${leg.routeColor}` : 'green',
             latlngs,
-          }
+          };
         });
         this.trip = polyLines;
 
@@ -143,7 +145,6 @@ export default {
       } finally {
         this.loading = false;
       }
-
     },
   },
   components: {
