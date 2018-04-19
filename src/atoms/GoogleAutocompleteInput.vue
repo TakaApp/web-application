@@ -33,8 +33,9 @@ export default {
 <style scoped>
 
 .styled-input {
-  font-size: 19px !important;
-  line-height: 24px !important;
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+
   background-color: #ffffff !important;
   border-radius: 4px !important;
   border: 1px solid #DBDBDB !important;
@@ -48,8 +49,9 @@ export default {
 }
 
 .input-container {
-  font-size: 19px !important;
-  line-height: 24px !important;
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+
   letter-spacing: unset !important;
   padding-top: unset !important;
   padding-bottom: unset !important;
@@ -70,8 +72,8 @@ export default {
 }
 
 .address-input {
-  font-size: 19px !important;
-  line-height: 24px !important;
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
 
   letter-spacing: unset !important;
   padding-top: unset !important;
