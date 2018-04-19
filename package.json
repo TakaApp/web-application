@@ -27,8 +27,7 @@
     "vue": "^2.5.2",
     "vue-google-autocomplete": "^1.1.0",
     "vue-router": "^3.0.1",
-    "vue2-leaflet": "^1.0.2",
-    "vuejs-datepicker": "^0.9.29"
+    "vue2-leaflet": "^1.0.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
