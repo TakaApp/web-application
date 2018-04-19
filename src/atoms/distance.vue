@@ -9,9 +9,7 @@ export default {
   name: 'Distance',
   props: ['data'],
   methods: {
-    distance: (distanceInMeters) => {
-      return `${Math.round(distanceInMeters)}m`;
-    },
+    distance: distanceInMeters => `${Math.round(distanceInMeters)}m`,
   },
 };
 </script>

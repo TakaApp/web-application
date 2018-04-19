@@ -11,9 +11,7 @@ export default {
   name: 'Hour',
   props: ['data'],
   methods: {
-    format: (timestamp) => {
-      return `${moment(timestamp).format('HH:mm')}`;
-    },
+    format: timestamp => `${moment(timestamp).format('HH:mm')}`,
   },
 };
 </script>
