@@ -34,42 +34,29 @@
         </div>
       </div>
     </div>
-    <div class="map">
-      <l-map ref="map" style="height: 100vh" :zoom.sync="zoom" :center.sync="center">
-        <l-tile-layer :url="url"></l-tile-layer>
-        <l-polyline
-          v-for="step in trip"
-          v-bind:key="step.id"
-          :lat-lngs="step.latlngs"
-          :color="step.color"
-          :dashArray="step.dashArray"
-          :weight="8"
-        />
 
-        <l-marker v-if="!!startMarker" :lat-lng="startMarker" :draggable="false" />
-        <l-marker v-if="!!endMarker" :lat-lng="endMarker" :draggable="false" />
-      </l-map>
-    </div>
-
+    <Map
+      :markers="[startMarker, endMarker]"
+      :trip="trip"
+    />
   </div>
 </template>
 
 <script>
 
 import L from 'leaflet';
-import { LMap, LTileLayer, LMarker, LPolyline } from 'vue2-leaflet';
+import polyUtil from 'polyline-encoded';
 
 import axios from 'axios';
 import moment from 'moment';
 
 import SearchForm from '@/organisms/SearchForm';
+import Map from '@/organisms/Map';
 
 import LegWalk from '@/components/LegWalk';
 import LegBus from '@/components/LegBus';
 
 import JourneySummary from '@/components/JourneySummary';
-
-import polyUtil from 'polyline-encoded';
 
 
 export default {
@@ -84,19 +71,10 @@ export default {
       from: this.from,
       to: this.to,
 
-
-      center: this.center || L.latLng(47.209136, -1.547149),
       trip: [],
 
       startMarker: null,
       endMarker: null,
-
-      // map style
-      url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
-      // seems like a good value
-      zoom: this.zoom || 13,
-      // because we support the community
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>',
     };
   },
   methods: {
@@ -104,13 +82,19 @@ export default {
     onFromUpdate(latLng) {
       this.from = `${latLng.latitude},${latLng.longitude}`;
 
-      this.startMarker = L.latLng(latLng.latitude, latLng.longitude);
+      this.startMarker = {
+        id: 'start',
+        latLng: L.latLng(latLng.latitude, latLng.longitude),
+      };
       this.center = L.latLng(latLng.latitude, latLng.longitude);
     },
     onToUpdate(latLng) {
       this.to = `${latLng.latitude},${latLng.longitude}`;
 
-      this.endMarker = L.latLng(latLng.latitude, latLng.longitude);
+      this.endMarker = {
+        id: 'end',
+        latLng: L.latLng(latLng.latitude, latLng.longitude),
+      };
       this.center = L.latLng(latLng.latitude, latLng.longitude);
     },
     /**
@@ -147,7 +131,6 @@ export default {
           };
         });
         this.trip = polyLines;
-
         this.results = result.data.plan.itineraries || [];
       } catch (error) {
         this.error = error.message;
@@ -162,16 +145,11 @@ export default {
     JourneySummary,
 
     SearchForm,
-
-    LMap,
-    LTileLayer,
-    LMarker,
-    LPolyline,
+    Map,
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 h1 {
@@ -193,13 +171,6 @@ small {
   overflow-y: scroll;
 }
 
-.map {
-  background-color: #FFF;
-  height: 100vh;
-  flex: 3;
-  overflow-x: auto;
-}
-
 .itinerary {
   text-align: center;
 
@@ -216,10 +187,6 @@ small {
   border-top: 1px solid hsla(0, 0%, 0%, 0.2);
   margin: 0 auto;
   width: 100%;
-}
-
-.address-input {
-  min-width: 250px;
 }
 
 </style>
