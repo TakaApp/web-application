@@ -28,7 +28,7 @@ import L from 'leaflet';
 import { LMap, LTileLayer, LMarker, LPolyline } from 'vue2-leaflet';
 
 export default {
-  name: 'Map',
+  name: 'MyMap',
   props: {
     markers: {
       default: () => [],
@@ -74,6 +74,12 @@ export default {
   height: 100vh;
   flex: 1;
   overflow-x: auto;
+}
+
+@media only screen and (max-width: 600px) {
+  .map {
+    display: none;
+  }
 }
 
 </style>

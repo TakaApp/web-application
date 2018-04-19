@@ -281,4 +281,10 @@ small {
   width: 100%;
 }
 
+@media only screen and (max-width: 600px) {
+  .search-form {
+    width: 100%;
+  }
+}
+
 </style>
