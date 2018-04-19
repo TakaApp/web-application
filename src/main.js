@@ -19,6 +19,7 @@ import Direction from './atoms/direction';
 // eslint-disable-next-line
 console.log(`%cVersion ${process.env.VERSION}`, 'background: #222; color: #bada55');
 
+/* eslint-disable*/
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -26,6 +27,7 @@ L.Icon.Default.mergeOptions({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
+/* eslint-enable */
 
 Vue.config.productionTip = false;
 
