@@ -28,7 +28,7 @@
           </el-select>
         </div>
       </div>
-      <div v-if="timeParameter === 'leaveAt'" class="date-options">
+      <div v-if="timeParameter === 'leaveAt' || timeParameter === 'arriveAt'" class="date-options">
         <div class="date-picker">
           <el-date-picker
             type="date"
@@ -85,7 +85,7 @@ export default {
   ],
   data() {
     return {
-      dev: process.env.NODE_ENV === 'development',
+      dev: process.env.DEBUG === true,
     };
   },
   methods: {
@@ -122,28 +122,30 @@ export default {
 .search-form-container {
   display: flex;
   flex-direction: column;
+  background-color: #09c7fb;
+  background-image: linear-gradient(315deg, #09c7fb 0%, #93fb9d 74%);
+}
 
+.from-to-inputs {
 }
 
 .from-to-inputs, .options, .button-container {
-  padding: 16px .5rem;
-}
-.from-to-inputs {
-  padding-top: 0;
+  padding: 8px .5rem;
 }
 
 .options {
   display: flex;
   flex-direction: column;
   width: calc(100% - .5rem - 6px);
-  background-color: #60dfcd;
-  background-image: linear-gradient(315deg, #60dfcd 0%, #1e9afe 74%);
 }
 
 .option-selector {
   flex: 1;
 }
 
+.options > div:only-child > .select  {
+  margin-bottom: 0;
+}
 
 .select {
   display: flex;

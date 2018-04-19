@@ -69,9 +69,9 @@ export default {
 
       from: this.from,
       to: this.to,
-      timeParameter: this.timeParameter || 'leaveAt',
+      timeParameter: this.timeParameter || 'leaveNow',
       date: new Date(),
-      time: `${moment().get('hour')}:${moment().get('minutes')}`,
+      time: `${moment().format('HH')}:${moment().format('mm')}`,
       trip: [],
 
       startMarker: null,
@@ -96,7 +96,6 @@ export default {
       this.date = value;
     },
     onChangeTime(value) {
-      console.log('onchangetime', value);
       this.time = value;
     },
     onChangeTimeParameter(value) {
@@ -174,18 +173,36 @@ export default {
     * Call the api for results
     */
     async searchJourneys() {
+      if (!this.to || !this.from) {
+        return;
+      }
+
       this.trip = [];
       this.results = [];
       this.loading = true;
       this.error = null;
       this.firstRun = false;
 
+      const extras = {};
+      if (this.timeParameter === 'leaveNow') {
+        extras.date = moment().format('MM-DD-YYYY');
+        extras.time = moment().format('HH:mm');
+      } else {
+        extras.date = moment(this.date).format('MM-DD-YYYY');
+        extras.time = moment(this.time, 'HH:mm').format('hh:mma');
+      }
+
+      if (this.timeParameter === 'leaveAt' || this.timeParameter === 'leaveNow') {
+        extras.arriveBy = 'false';
+      } else {
+        extras.arriveBy = 'true';
+      }
+
       try {
         const result = await axios.post(`${process.env.API_URL}/trip`, {
-          from: this.from || '47.20808979999999,-1.5364250000000084',
-          to: this.to || '47.2129612,-1.5623385000000098',
-          leaveAt: moment().add(15, 'minutes').format('HH:mm'),
-          date: moment().format('MM-DD-YYYY'),
+          from: this.from,
+          to: this.to,
+          ...extras,
         });
 
         this.results = result.data.plan.itineraries || [];
@@ -212,6 +229,23 @@ export default {
 
     SearchForm,
     Map,
+  },
+  watch: {
+    time() {
+      this.searchJourneys();
+    },
+    date() {
+      this.searchJourneys();
+    },
+    from() {
+      this.searchJourneys();
+    },
+    to() {
+      this.searchJourneys();
+    },
+    timeParameter() {
+      this.searchJourneys();
+    },
   },
 };
 </script>
