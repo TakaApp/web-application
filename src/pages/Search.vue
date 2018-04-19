@@ -8,30 +8,16 @@
         :onToUpdate="onToUpdate"
       />
       <div v-if="loading"><small>Chargement...</small></div>
-      <div v-if="!loading && !firstRun">
-        <p>Nombre de résultats : {{results.length}}</p>
+      <div class="results" v-if="!loading && !firstRun">
+        <p v-if="results.length === 0">Aucun résultat (ง'̀-'́)ง</p>
 
-        <div v-for="(itinerary, index) in results" v-bind:key="index" class="itinerary">
-          <JourneySummary :itinerary="itinerary" />
-          <div class="legs">
-            <div v-for="(leg, index) in itinerary.legs" v-bind:key="leg.startTime">
-              <LegWalk
-                v-if="leg.mode === 'WALK'"
-                :leg="leg"
-                :index="index"
-                :last="index === itinerary.legs.length - 1"
-                :first="index === 0"
-              />
-              <LegBus
-                v-if="leg.mode === 'BUS'"
-                :leg="leg"
-                :index="index"
-                :last="index === itinerary.legs.length - 1"
-                :first="index === 0"
-              />
-            </div>
-          </div>
-        </div>
+        <Itinerary
+          v-for="(itinerary, index) in results"
+          :key="index"
+          :itinerary="itinerary"
+          v-bind:collapsed="collapsed[index]"
+          :onClick="() => toggleItinerary(index)"
+        />
       </div>
     </div>
 
@@ -52,10 +38,10 @@ import moment from 'moment';
 
 import SearchForm from '@/organisms/SearchForm';
 import Map from '@/organisms/Map';
+import Itinerary from '@/organisms/Itinerary';
 
 import LegWalk from '@/components/LegWalk';
 import LegBus from '@/components/LegBus';
-
 import JourneySummary from '@/components/JourneySummary';
 
 
@@ -64,7 +50,9 @@ export default {
   data() {
     return {
       selectedItinerary: 0,
+
       results: [],
+      collapsed: {},
 
       firstRun: true,
       loading: false,
@@ -78,7 +66,21 @@ export default {
     };
   },
   methods: {
+    toggleItinerary(index) {
+      const newCollapsedState = {};
+      const newState = !this.collapsed[index];
+      Object.keys(this.collapsed).forEach((key) => {
+        newCollapsedState[key] = true;
+      });
+      newCollapsedState[index] = newState;
+      this.collapsed = newCollapsedState;
 
+      if (!newState) {
+        this.getTrip(index);
+      } else {
+        this.getTrip(-1);
+      }
+    },
     onFromUpdate(latLng) {
       this.from = `${latLng.latitude},${latLng.longitude}`;
 
@@ -97,6 +99,31 @@ export default {
       };
       this.center = L.latLng(latLng.latitude, latLng.longitude);
     },
+    getTrip(itineraryId) {
+      if (itineraryId === -1) {
+        this.trip = [];
+        return;
+      }
+      const legs = this.results[itineraryId].legs;
+      const polyLines = legs.map((leg, index) => {
+        const latlngs = polyUtil.decode(leg.legGeometry.points);
+
+        // eslint-disable-next-line
+        const color = leg.mode === 'WALK' ? '#3367D6' : (
+          leg.routeColor ? `#${leg.routeColor}` : 'green'
+        );
+        const dashArray = leg.mode === 'WALK' ? '1 12' : null;
+
+        return {
+          id: `${leg.routeId}${index}`,
+          color,
+          dashArray,
+          latlngs,
+        };
+      });
+      this.trip = polyLines;
+      console.log('this.trip', this.trip);
+    },
     /**
     * Call the api for results
     */
@@ -113,25 +140,15 @@ export default {
           leaveAt: moment().add(15, 'minutes').format('HH:mm'),
           date: moment().format('MM-DD-YYYY'),
         });
-        const legs = result.data.plan.itineraries[this.selectedItinerary].legs;
-        const polyLines = legs.map((leg, index) => {
-          const latlngs = polyUtil.decode(leg.legGeometry.points);
 
-          // eslint-disable-next-line
-          const color = leg.mode === 'WALK' ? '#3367D6' : (
-            leg.routeColor ? `#${leg.routeColor}` : 'green'
-          );
-          const dashArray = leg.mode === 'WALK' ? '1 12' : null;
-
-          return {
-            id: `${leg.routeId}${index}`,
-            color,
-            dashArray,
-            latlngs,
-          };
-        });
-        this.trip = polyLines;
         this.results = result.data.plan.itineraries || [];
+        this.getTrip(0);
+
+        this.collapsed = {};
+        Object.keys(this.results).forEach((key) => {
+          this.collapsed[key] = true;
+        });
+        this.collapsed[0] = false;
       } catch (error) {
         this.error = error.message;
       } finally {
@@ -140,6 +157,8 @@ export default {
     },
   },
   components: {
+    Itinerary,
+
     LegWalk,
     LegBus,
     JourneySummary,
@@ -171,16 +190,8 @@ small {
   overflow-y: scroll;
 }
 
-.itinerary {
-  text-align: center;
-
-  max-width: 500px;
-  margin: 0 auto;
-  margin-bottom: 2rem;
-
-  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
-  border-radius: 4px;
-  background-color: #FFF;
+.results {
+  margin-top: 1rem;
 }
 
 .legs {
