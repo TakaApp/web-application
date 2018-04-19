@@ -42,7 +42,8 @@
           v-bind:key="step.id"
           :lat-lngs="step.latlngs"
           :color="step.color"
-          :weight="7"
+          :dashArray="step.dashArray"
+          :weight="8"
         />
 
         <l-marker v-if="!!startMarker" :lat-lng="startMarker" :draggable="false" />
@@ -131,9 +132,17 @@ export default {
         const legs = result.data.plan.itineraries[this.selectedItinerary].legs;
         const polyLines = legs.map((leg, index) => {
           const latlngs = polyUtil.decode(leg.legGeometry.points);
+
+          // eslint-disable-next-line
+          const color = leg.mode === 'WALK' ? '#3367D6' : (
+            leg.routeColor ? `#${leg.routeColor}` : 'green'
+          );
+          const dashArray = leg.mode === 'WALK' ? '1 12' : null;
+
           return {
             id: `${leg.routeId}${index}`,
-            color: leg.routeColor ? `#${leg.routeColor}` : 'green',
+            color,
+            dashArray,
             latlngs,
           };
         });
