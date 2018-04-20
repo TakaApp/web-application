@@ -51,6 +51,27 @@ export default {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>',
     };
   },
+  methods: {
+    fitMap() {
+      if (this.markers.length === 2 && this.markers[0] && this.markers[1]) {
+        const bounds = L.latLngBounds([
+          this.markers[0].latLng,
+          this.markers[1].latLng,
+          ...this.trip.map(t => t.latlngs),
+        ]);
+        this.$refs.map.mapObject.fitBounds(bounds);
+      } else if (this.markers[0]) {
+        this.center = L.latLng(this.markers[0].latLng.lat, this.markers[0].latLng.lng);
+      } else if (this.markers[1]) {
+        this.center = L.latLng(this.markers[1].latLng.lat, this.markers[1].latLng.lng);
+      }
+    },
+  },
+  watch: {
+    markers() {
+      this.fitMap();
+    },
+  },
   components: {
     LMap,
     LTileLayer,
