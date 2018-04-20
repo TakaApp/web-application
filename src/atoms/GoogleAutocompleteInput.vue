@@ -2,12 +2,15 @@
   <div class="styled-input">
     <div class="input-container">
       <vue-google-autocomplete
+        ref="vga"
         :id="id"
         :enable-geolocation="true"
         :country="['fr']"
         classname="address-input"
         v-bind:placeholder="placeholder"
         v-on:placechanged="placechanged"
+        @focus="e => { $emit('focus'); }"
+        @blur="e => { $emit('blur'); }"
       />
     </div>
   </div>
@@ -24,6 +27,11 @@ export default {
     'placeholder',
     'placechanged',
   ],
+  methods: {
+    forceCoordinates(latlng) {
+      this.$refs.vga.update(latlng);
+    },
+  },
   components: {
     VueGoogleAutocomplete,
   },

@@ -4,14 +4,20 @@
     <div class="from-to-inputs">
       <GoogleAutocompleteInput
         id="from"
+        ref="fromGai"
         placeholder="Départ"
         :placechanged="getAddressData"
+        @focus="() => { $emit('focusFromTo', 'from'); }"
+        @blur="() => { $emit('blurFromTo', 'from'); }"
       />
       <GoogleAutocompleteInput
         id="to"
+        ref="toGai"
         placeholder="Arrivée"
         :placechanged="getAddressData"
         style="margin-top: .5rem"
+        @focus="() => { $emit('focusFromTo', 'to'); }"
+        @blur="() => { $emit('blurFromTo', 'to'); }"
       />
     </div>
 
@@ -71,7 +77,9 @@ export default {
   name: 'SearchForm',
   props: [
     'debug',
+
     'onFromUpdate',
+
     'onToUpdate',
 
     'timeParameter',
@@ -109,6 +117,13 @@ export default {
         });
       }
     },
+    forceCoordinates(fromTo, latlng) {
+      if (fromTo === 'from') {
+        this.$refs.fromGai.forceCoordinates(latlng);
+      } else if (fromTo === 'to') {
+        this.$refs.toGai.forceCoordinates(latlng);
+      }
+    },
   },
   components: {
     GoogleAutocompleteInput,
@@ -122,11 +137,6 @@ export default {
 .search-form-container {
   display: flex;
   flex-direction: column;
-  background-color: #09c7fb;
-  background-image: linear-gradient(315deg, #09c7fb 0%, #93fb9d 74%);
-}
-
-.from-to-inputs {
 }
 
 .from-to-inputs, .options, .button-container {

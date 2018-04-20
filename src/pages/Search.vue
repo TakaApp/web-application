@@ -4,8 +4,14 @@
       <h1>nantes<small>.cool</small></h1>
 
       <SearchForm
+        ref="searchForm"
+
         :debug="debug"
         :onFromUpdate="onFromUpdate"
+
+        @focusFromTo="focusFromTo"
+        @blurFromTo="blurFromTo"
+
         :onToUpdate="onToUpdate"
 
         :timeParameter="timeParameter"
@@ -32,6 +38,7 @@
     </div>
 
     <Map
+      @click="updateMarker"
       :markers="[startMarker, endMarker]"
       :trip="trip"
     />
@@ -40,6 +47,7 @@
 
 <script>
 
+import debounce from 'lodash/debounce';
 import L from 'leaflet';
 import polyUtil from 'polyline-encoded';
 
@@ -59,6 +67,9 @@ export default {
   name: 'Home',
   data() {
     return {
+      fromActive: false,
+      toActive: false,
+
       selectedItinerary: 0,
 
       results: [],
@@ -92,6 +103,30 @@ export default {
       };
       this.searchJourneys();
     },
+    focusFromTo(fromTo) {
+      this[`${fromTo}Active`] = true;
+    },
+    blurFromTo(fromTo) {
+      debounce(() => {
+        this[`${fromTo}Active`] = false;
+      }, 100)();
+    },
+    updateMarker(latlng) {
+      if (this.fromActive) {
+        console.log('this.refs', this.$refs);
+        this.$refs.searchForm.forceCoordinates('from', latlng);
+        this.onFromUpdate({
+          longitude: latlng.lng,
+          latitude: latlng.lat,
+        });
+      } else if (this.toActive) {
+        this.$refs.searchForm.forceCoordinates('to', latlng);
+        this.onToUpdate({
+          longitude: latlng.lng,
+          latitude: latlng.lat,
+        });
+      }
+    },
     onChangeDate(value) {
       this.date = value;
     },
@@ -120,6 +155,7 @@ export default {
       }
     },
     onFromUpdate(latLng) {
+      console.log('latlng', latLng);
       this.from = `${latLng.latitude},${latLng.longitude}`;
 
       this.startMarker = {
@@ -132,6 +168,7 @@ export default {
         this.searchJourneys();
       }
     },
+
     onToUpdate(latLng) {
       this.to = `${latLng.latitude},${latLng.longitude}`;
 
@@ -269,6 +306,11 @@ small {
   height: 100vh;
 
   overflow-y: scroll;
+
+  overflow-x: hidden;
+
+  background-color: #ffcfdf;
+  background-image: linear-gradient(315deg, #ffcfdf 0%, #b0f3f1 74%);
 }
 
 .results {

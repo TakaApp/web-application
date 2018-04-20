@@ -1,6 +1,12 @@
 <template>
   <div class="map">
-    <l-map ref="map" style="height: 100vh" :zoom.sync="zoom" :center.sync="center">
+    <l-map
+      ref="map"
+      style="height: 100vh"
+      :zoom.sync="zoom"
+      :center.sync="center"
+      @click="e => { $emit('click', e.latlng); }"
+    >
       <l-tile-layer :url="url"></l-tile-layer>
       <l-polyline
         v-for="step in trip"
