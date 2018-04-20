@@ -87,4 +87,9 @@ export default {
   font-weight: normal !important;
   text-overflow: ellipsis;
 }
+
+input:focus {
+  outline: none;
+}
+
 </style>
