@@ -40,6 +40,7 @@
     <Map
       @click="updateMarker"
       @toggleItinerary="toggleItinerary"
+      @updateMarker="updateMarkerFromTo"
       :markers="[startMarker, endMarker]"
       :trips="trips"
     />
@@ -91,16 +92,24 @@ export default {
     };
   },
   methods: {
+    updateMarkerFromTo(p, a) {
+      if (a === 'from') {
+        console.log('update from', p._latlng)
+        this.onFromUpdate(p._latlng);
+      } else if (a === 'to') {
+        this.onToUpdate(p._latlng);
+      }
+    },
     debug() {
       this.from = '47.20808979999999,-1.5364250000000084';
       this.to = '47.2129612,-1.5623385000000098';
       this.startMarker = {
         id: 'start',
-        latLng: L.latLng(47.20808979999999, -1.5364250000000084),
+        latlng: L.latlng(47.20808979999999, -1.5364250000000084),
       };
       this.endMarker = {
         id: 'end',
-        latLng: L.latLng(47.2129612, -1.5623385000000098),
+        latlng: L.latlng(47.2129612, -1.5623385000000098),
       };
       this.searchJourneys();
     },
@@ -116,14 +125,14 @@ export default {
       if (this.fromActive) {
         this.$refs.searchForm.forceCoordinates('from', latlng);
         this.onFromUpdate({
-          longitude: latlng.lng,
-          latitude: latlng.lat,
+          lng: latlng.lng,
+          lat: latlng.lat,
         });
       } else if (this.toActive) {
         this.$refs.searchForm.forceCoordinates('to', latlng);
         this.onToUpdate({
-          longitude: latlng.lng,
-          latitude: latlng.lat,
+          lng: latlng.lng,
+          lat: latlng.lat,
         });
       }
     },
@@ -154,28 +163,28 @@ export default {
         this.getTrip(-1);
       }
     },
-    onFromUpdate(latLng) {
-      this.from = `${latLng.latitude},${latLng.longitude}`;
+    onFromUpdate(latlng) {
+      this.from = `${latlng.lat},${latlng.lng}`;
 
       this.startMarker = {
-        id: 'start',
-        latLng: L.latLng(latLng.latitude, latLng.longitude),
+        id: 'from',
+        latlng: L.latLng(latlng.lat, latlng.lng),
       };
-      this.center = L.latLng(latLng.latitude, latLng.longitude);
+      this.center = L.latLng(latlng.lat, latlng.lng);
 
       if (this.to) {
         this.searchJourneys();
       }
     },
 
-    onToUpdate(latLng) {
-      this.to = `${latLng.latitude},${latLng.longitude}`;
+    onToUpdate(latlng) {
+      this.to = `${latlng.lat},${latlng.lng}`;
 
       this.endMarker = {
-        id: 'end',
-        latLng: L.latLng(latLng.latitude, latLng.longitude),
+        id: 'to',
+        latlng: L.latLng(latlng.lat, latlng.lng),
       };
-      this.center = L.latLng(latLng.latitude, latLng.longitude);
+      this.center = L.latLng(latlng.lat, latlng.lng);
 
       if (this.from) {
         this.searchJourneys();

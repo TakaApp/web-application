@@ -24,8 +24,9 @@
         v-for="marker in markers"
         v-if="marker"
         v-bind:key="marker ? marker.id : null"
-        :lat-lng="marker ? marker.latLng : null"
-        :draggable="false"
+        :lat-lng="marker ? marker.latlng : null"
+        :draggable="true"
+        v-on:moveend="(event) => { $emit('updateMarker', event.target, marker.id) }"
       />
     </l-map>
   </div>
@@ -64,15 +65,15 @@ export default {
     fitMap() {
       if (this.markers.length === 2 && this.markers[0] && this.markers[1]) {
         const bounds = L.latLngBounds([
-          this.markers[0].latLng,
-          this.markers[1].latLng,
+          this.markers[0].latlng,
+          this.markers[1].latlng,
           ...this.trips.map(trip => trip.polyLines.latlngs),
         ]);
         this.$refs.map.mapObject.fitBounds(bounds);
       } else if (this.markers[0]) {
-        this.center = L.latLng(this.markers[0].latLng.lat, this.markers[0].latLng.lng);
+        this.center = L.latLng(this.markers[0].latlng.lat, this.markers[0].latlng.lng);
       } else if (this.markers[1]) {
-        this.center = L.latLng(this.markers[1].latLng.lat, this.markers[1].latLng.lng);
+        this.center = L.latLng(this.markers[1].latlng.lat, this.markers[1].latlng.lng);
       }
     },
   },
