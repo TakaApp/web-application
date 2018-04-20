@@ -3,6 +3,6 @@
 module.exports = {
   NODE_ENV: '"production"',
   API_URL: '"https://taka-api.aksels.io"',
-  VERSION: '"v0.9"',
+  VERSION: '"v0.10"',
   DEBUG: 'false',
 }
