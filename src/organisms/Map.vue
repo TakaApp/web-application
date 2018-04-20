@@ -8,14 +8,17 @@
       @click="e => { $emit('click', e.latlng); }"
     >
       <l-tile-layer :url="url"></l-tile-layer>
-      <l-polyline
-        v-for="step in trip"
-        v-bind:key="step.id"
-        :lat-lngs="step.latlngs"
-        :color="step.color"
-        :dashArray="step.dashArray"
-        :weight="8"
-      />
+      <span v-for="(trip, index) in trips" v-bind:key="index">
+        <l-polyline
+          v-for="step in trip.polyLines"
+          v-bind:key="step.id"
+          :lat-lngs="step.latlngs"
+          :color="step.color"
+          :dashArray="step.dashArray"
+          :weight="step.weight"
+          v-on:click="(event) => { $emit('toggleItinerary', step.resultId) }"
+        />
+      </span>
 
       <l-marker
         v-for="marker in markers"
@@ -40,7 +43,7 @@ export default {
       default: () => [],
       type: Array,
     },
-    trip: {
+    trips: {
       default: () => [],
       type: Array,
     },
@@ -63,7 +66,7 @@ export default {
         const bounds = L.latLngBounds([
           this.markers[0].latLng,
           this.markers[1].latLng,
-          ...this.trip.map(t => t.latlngs),
+          ...this.trips.map(trip => trip.polyLines.latlngs),
         ]);
         this.$refs.map.mapObject.fitBounds(bounds);
       } else if (this.markers[0]) {

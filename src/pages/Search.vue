@@ -39,8 +39,9 @@
 
     <Map
       @click="updateMarker"
+      @toggleItinerary="toggleItinerary"
       :markers="[startMarker, endMarker]"
-      :trip="trip"
+      :trips="trips"
     />
   </div>
 </template>
@@ -83,7 +84,7 @@ export default {
       timeParameter: this.timeParameter || 'leaveNow',
       date: new Date(),
       time: `${moment().format('HH')}:${moment().format('mm')}`,
-      trip: [],
+      trips: [],
 
       startMarker: null,
       endMarker: null,
@@ -113,7 +114,6 @@ export default {
     },
     updateMarker(latlng) {
       if (this.fromActive) {
-        console.log('this.refs', this.$refs);
         this.$refs.searchForm.forceCoordinates('from', latlng);
         this.onFromUpdate({
           longitude: latlng.lng,
@@ -155,7 +155,6 @@ export default {
       }
     },
     onFromUpdate(latLng) {
-      console.log('latlng', latLng);
       this.from = `${latLng.latitude},${latLng.longitude}`;
 
       this.startMarker = {
@@ -183,28 +182,49 @@ export default {
       }
     },
     getTrip(itineraryId) {
-      if (itineraryId === -1) {
-        this.trip = [];
-        return;
-      }
-      const legs = this.results[itineraryId].legs;
-      const polyLines = legs.map((leg, index) => {
-        const latlngs = polyUtil.decode(leg.legGeometry.points);
+      const trips = [];
+      this.results.forEach((result, resultId) => {
+        const isActive = resultId === itineraryId;
+        const combinedPolyLines = result.legs.map((leg, index) => {
+          const latlngs = polyUtil.decode(leg.legGeometry.points);
 
-        // eslint-disable-next-line
-        const color = leg.mode === 'WALK' ? '#3367D6' : (
-          leg.routeColor ? `#${leg.routeColor}` : 'green'
-        );
-        const dashArray = leg.mode === 'WALK' ? '1 12' : null;
+          // eslint-disable-next-line
+          const color = leg.mode === 'WALK' ? '#3367D6' : (
+            leg.routeColor ? `#${leg.routeColor}` : 'green'
+          );
+          const dashArray = leg.mode === 'WALK' ? '1 12' : null;
 
-        return {
-          id: `${leg.routeId}${index}`,
-          color,
-          dashArray,
-          latlngs,
-        };
+          return [
+            // outline
+            {
+              id: `${leg.routeId}${index}${resultId}-outline`,
+              weight: 10,
+              color: '#424242',
+              dashArray,
+              latlngs,
+              resultId,
+            },
+            // main polyline
+            {
+              id: `${leg.routeId}${index}${resultId}`,
+              weight: 9,
+              color: isActive ? color : '#cccccc',
+              dashArray,
+              latlngs,
+              resultId,
+            },
+          ];
+        });
+        combinedPolyLines.forEach((polyLines) => {
+          trips.push({
+            active: isActive,
+            polyLines,
+          });
+        });
       });
-      this.trip = polyLines;
+
+
+      this.trips = trips.sort(i => i.active);
     },
     /**
     * Call the api for results
@@ -214,7 +234,7 @@ export default {
         return;
       }
 
-      this.trip = [];
+      this.trips = [];
       this.results = [];
       this.loading = true;
       this.error = null;
