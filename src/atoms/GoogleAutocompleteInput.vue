@@ -7,10 +7,16 @@
         :enable-geolocation="true"
         :country="['fr']"
         classname="address-input"
-        v-bind:placeholder="placeholder"
+        v-bind:placeholder="this.focused ? 'Ou cliquez sur la carte !' : placeholder"
         v-on:placechanged="placechanged"
-        @focus="e => { $emit('focus'); }"
-        @blur="e => { $emit('blur'); }"
+        @focus="e => {
+          $emit('focus');
+          this.focused = true;
+        }"
+        @blur="e => {
+          $emit('blur');
+          this.focused = false;
+        }"
       />
     </div>
   </div>
@@ -27,6 +33,11 @@ export default {
     'placeholder',
     'placechanged',
   ],
+  data() {
+    return ({
+      focused: false,
+    });
+  },
   methods: {
     forceCoordinates(latlng) {
       this.$refs.vga.update(latlng);

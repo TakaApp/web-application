@@ -71,7 +71,7 @@
 
 <script>
 import GoogleAutocompleteInput from '@/atoms/GoogleAutocompleteInput';
-import Button from '@/atoms/Button';
+import MyButton from '@/atoms/MyButton';
 
 export default {
   name: 'SearchForm',
@@ -106,14 +106,14 @@ export default {
     getAddressData(addressData, placeResultData, id) {
       if (id === 'from') {
         this.onFromUpdate({
-          latitude: addressData.latitude,
-          longitude: addressData.longitude,
+          lat: addressData.lat,
+          lng: addressData.lng,
         });
       }
       if (id === 'to') {
         this.onToUpdate({
-          latitude: addressData.latitude,
-          longitude: addressData.longitude,
+          lat: addressData.lat,
+          lng: addressData.lng,
         });
       }
     },
@@ -127,7 +127,7 @@ export default {
   },
   components: {
     GoogleAutocompleteInput,
-    Button,
+    MyButton,
   },
 };
 </script>

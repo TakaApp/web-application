@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <Map
+    <MyMap
       @click="updateMarker"
       @toggleItinerary="toggleItinerary"
       @updateMarker="updateMarkerFromTo"
@@ -57,7 +57,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 import SearchForm from '@/organisms/SearchForm';
-import Map from '@/organisms/Map';
+import MyMap from '@/organisms/MyMap';
 import Itinerary from '@/organisms/Itinerary';
 
 import LegWalk from '@/components/LegWalk';
@@ -94,7 +94,6 @@ export default {
   methods: {
     updateMarkerFromTo(p, a) {
       if (a === 'from') {
-        console.log('update from', p._latlng)
         this.onFromUpdate(p._latlng);
       } else if (a === 'to') {
         this.onToUpdate(p._latlng);
@@ -294,7 +293,7 @@ export default {
     JourneySummary,
 
     SearchForm,
-    Map,
+    MyMap,
   },
   watch: {
     time() {
