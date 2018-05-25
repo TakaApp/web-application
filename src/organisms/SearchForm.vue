@@ -59,7 +59,7 @@
     </div>
 
     <div v-if="dev" class="button-container">
-      <Button
+      <MyButton
         :onClick="debug"
         label="Rechercher"
         style="margin-top: .5rem"
