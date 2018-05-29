@@ -2,7 +2,7 @@
   <div class="search-form-container">
 
     <div class="from-to-inputs">
-      <GoogleAutocompleteInput
+      <LocationAutocompleteInput
         id="from"
         ref="fromGai"
         placeholder="Départ"
@@ -10,7 +10,7 @@
         @focus="() => { $emit('focusFromTo', 'from'); }"
         @blur="() => { $emit('blurFromTo', 'from'); }"
       />
-      <GoogleAutocompleteInput
+      <LocationAutocompleteInput
         id="to"
         ref="toGai"
         placeholder="Arrivée"
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import GoogleAutocompleteInput from '@/atoms/GoogleAutocompleteInput';
+import LocationAutocompleteInput from '@/atoms/LocationAutocompleteInput';
 import MyButton from '@/atoms/MyButton';
 
 export default {
@@ -100,10 +100,9 @@ export default {
     /**
     * When the location is found
     * @param {Object} addressData Data of the found location
-    * @param {Object} placeResultData PlaceResult object
     * @param {String} id Input container ID
     */
-    getAddressData(addressData, placeResultData, id) {
+    getAddressData(addressData, id) {
       if (id === 'from') {
         this.onFromUpdate({
           lat: addressData.lat,
@@ -126,7 +125,7 @@ export default {
     },
   },
   components: {
-    GoogleAutocompleteInput,
+    LocationAutocompleteInput,
     MyButton,
   },
 };

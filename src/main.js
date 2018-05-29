@@ -4,7 +4,7 @@ import Vue from 'vue';
 import moment from 'moment';
 import L from 'leaflet';
 
-import { TimeSelect, Select, DatePicker, Option } from 'element-ui';
+import { Autocomplete, TimeSelect, Select, DatePicker, Option } from 'element-ui';
 import lang from 'element-ui/lib/locale/lang/fr';
 import locale from 'element-ui/lib/locale';
 
@@ -48,6 +48,7 @@ Vue.component('Hour', Hour);
 Vue.component('Place', Place);
 Vue.component('Direction', Direction);
 
+Vue.use(Autocomplete);
 Vue.use(TimeSelect);
 Vue.use(Select);
 Vue.use(DatePicker);

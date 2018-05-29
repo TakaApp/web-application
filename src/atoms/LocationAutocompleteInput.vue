@@ -1,14 +1,12 @@
 <template>
   <div class="styled-input">
     <div class="input-container">
-      <vue-google-autocomplete
-        ref="vga"
-        :id="id"
-        :enable-geolocation="true"
-        :country="['fr']"
-        classname="address-input"
+      <el-autocomplete
+        v-model="inputData"
+        :fetch-suggestions="querySearch"
         v-bind:placeholder="this.focused ? 'Ou cliquez sur la carte !' : placeholder"
-        v-on:placechanged="placechanged"
+        class="address-input"
+        @select="handleSelect"
         @focus="e => {
           $emit('focus');
           this.focused = true;
@@ -17,17 +15,20 @@
           $emit('blur');
           this.focused = false;
         }"
-      />
+      >
+        <template slot-scope="{ item }">
+          <div class="value">{{ item.stop_name }}</div>
+        </template>
+      </el-autocomplete>
     </div>
   </div>
 </template>
 
 <script>
-import VueGoogleAutocomplete from 'vue-google-autocomplete';
-
+import axios from 'axios';
 
 export default {
-  name: 'GoogleAutocompleteInput',
+  name: 'LocationAutocompleteInput',
   props: [
     'id',
     'placeholder',
@@ -36,15 +37,52 @@ export default {
   data() {
     return ({
       focused: false,
+      inputData: '',
     });
   },
   methods: {
-    forceCoordinates(latlng) {
-      this.$refs.vga.update(latlng);
+    // need to promisify google geocoder
+    async handleSelect(v) {
+      this.inputData = v.stop_name;
+      if (v.type === 'STOP') {
+        this.placechanged({
+          lat: v.lat,
+          lng: v.lon,
+        }, this.id);
+      }
+      if (v.type === 'GOOGLE') {
+        const placeId = v.place_id;
+
+        // eslint-disable-next-line
+        const geocoder = new google.maps.Geocoder;
+
+        geocoder.geocode({ placeId }, (results, status) => {
+          if (status === 'OK') {
+            if (results[0]) {
+              const location = results[0].geometry.location;
+              this.placechanged({
+                lat: location.lat(),
+                lng: location.lng(),
+              }, this.id);
+            } else {
+              // window.alert('No results found');
+            }
+          } else {
+            // window.alert('Geocoder failed due to: ' + status);
+          }
+        });
+      }
     },
-  },
-  components: {
-    VueGoogleAutocomplete,
+    async querySearch(queryString, cb) {
+      if (!queryString) return cb([]);
+      const requestResult = await axios.get(`${process.env.API_URL}/search-location/${queryString}`);
+      const data = requestResult.data;
+
+      return cb(data || []);
+    },
+    forceCoordinates(latlng) {
+      this.inputData = `${latlng.lat}${latlng.lng}`;
+    },
   },
 };
 </script>
@@ -91,6 +129,8 @@ export default {
 }
 
 .address-input {
+  width: 100%;
+
   font-size: 14px !important;
   line-height: 14px !important;
 
