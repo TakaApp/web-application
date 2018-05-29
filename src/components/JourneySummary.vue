@@ -4,10 +4,13 @@
     v-bind:class="{ selected }"
   >
     <div class="journey-departure">
-      <div class="journey-departure-label">Départ dans</div>
-      <div class="departure-minutes-left-container">
+      <div v-if="getMinutesLeftBeforeStart() <= 90" class="journey-departure-label">Départ dans</div>
+      <div v-if="getMinutesLeftBeforeStart() <= 90" class="departure-minutes-left-container">
         <div class="departure-minutes-left">{{getMinutesLeftBeforeStart()}}</div>
         <div>min</div>
+      </div>
+      <div v-if="getMinutesLeftBeforeStart() > 90" class="departure-minutes-left">
+        <div>{{moment(itinerary.startTime).format('HH:mm')}}</div>
       </div>
     </div>
     <div class="journey-details">
@@ -33,6 +36,7 @@ export default {
       const diffInS = Math.round(diffInMs / 1000 / 60);
       return diffInS;
     },
+
   },
 };
 </script>
