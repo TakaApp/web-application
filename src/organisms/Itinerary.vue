@@ -22,6 +22,13 @@
           :last="index === itinerary.legs.length - 1"
           :first="index === 0"
         />
+        <LegTram
+          v-if="leg.mode === 'TRAM'"
+          :leg="leg"
+          :index="index"
+          :last="index === itinerary.legs.length - 1"
+          :first="index === 0"
+        />
       </div>
     </div>
   </div>
@@ -31,6 +38,7 @@
 
 import LegWalk from '@/components/LegWalk';
 import LegBus from '@/components/LegBus';
+import LegTram from '@/components/LegTram';
 import JourneySummary from '@/components/JourneySummary';
 
 export default {
@@ -45,6 +53,7 @@ export default {
   components: {
     LegWalk,
     LegBus,
+    LegTram,
     JourneySummary,
   },
 };
