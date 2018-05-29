@@ -64,10 +64,18 @@ export default {
   methods: {
     fitMap() {
       if (this.markers.length === 2 && this.markers[0] && this.markers[1]) {
+        const polyLinesLatLngs = [];
+        this.trips.forEach(trip => {
+          trip.polyLines.forEach(polyLine => {
+            polyLine.latlngs.forEach(latlng => {
+              polyLinesLatLngs.push(L.latLng(latlng[0], latlng[1]))
+            })
+          });
+        })
         const bounds = L.latLngBounds([
           this.markers[0].latlng,
           this.markers[1].latlng,
-          ...this.trips.map(trip => trip.polyLines.latlngs),
+          ...polyLinesLatLngs,
         ]);
         this.$refs.map.mapObject.fitBounds(bounds);
       } else if (this.markers[0]) {
