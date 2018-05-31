@@ -87,11 +87,19 @@ export default {
 };
 </script>
 
+<style>
+.el-input {
+  font-size: 16px !important;
+  line-height: 16px !important;
+}
+</style>
+
+
 <style scoped>
 
 .styled-input {
-  font-size: 14px !important;
-  line-height: 14px !important;
+  font-size: 16px !important;
+  line-height: 16px !important;
 
   background-color: #ffffff !important;
   border-radius: 4px !important;
@@ -141,8 +149,8 @@ export default {
   color: #484848 !important;
   background-color: transparent !important;
   border: 0px !important;
-  padding: 11px !important;
-  width: calc(100% - 22px) !important;
+  padding: 0 !important;
+  width: 100% !important;
   font-weight: normal !important;
   text-overflow: ellipsis;
 }
