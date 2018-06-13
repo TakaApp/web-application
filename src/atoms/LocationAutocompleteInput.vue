@@ -17,7 +17,7 @@
         }"
       >
         <template slot-scope="{ item }">
-          <div class="value">{{ item.stop_name }}</div>
+          <div class="value">{{ item.name }}</div>
         </template>
       </el-autocomplete>
     </div>
@@ -41,37 +41,12 @@ export default {
     });
   },
   methods: {
-    // need to promisify google geocoder
-    async handleSelect(v) {
-      this.inputData = v.stop_name;
-      if (v.type === 'STOP') {
-        this.placechanged({
-          lat: v.lat,
-          lng: v.lon,
-        }, this.id);
-      }
-      if (v.type === 'GOOGLE') {
-        const placeId = v.place_id;
-
-        // eslint-disable-next-line
-        const geocoder = new google.maps.Geocoder;
-
-        geocoder.geocode({ placeId }, (results, status) => {
-          if (status === 'OK') {
-            if (results[0]) {
-              const location = results[0].geometry.location;
-              this.placechanged({
-                lat: location.lat(),
-                lng: location.lng(),
-              }, this.id);
-            } else {
-              // window.alert('No results found');
-            }
-          } else {
-            // window.alert('Geocoder failed due to: ' + status);
-          }
-        });
-      }
+    handleSelect(v) {
+      this.inputData = v.name;
+      this.placechanged({
+        lat: v.lat,
+        lng: v.lng,
+      }, this.id);
     },
     async querySearch(queryString, cb) {
       if (!queryString) return cb([]);
