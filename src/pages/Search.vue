@@ -93,6 +93,7 @@ export default {
   },
   methods: {
     updateMarkerFromTo(p, a) {
+      this.$refs.searchForm.forceCoordinates(a, p._latlng);
       if (a === 'from') {
         this.onFromUpdate(p._latlng);
       } else if (a === 'to') {
