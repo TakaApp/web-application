@@ -1,0 +1,21 @@
+{
+  "short_name": "TaKa",
+  "name": "Taka - nantes.cool",
+  "icons": [
+    {
+      "src": "/static/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/?source=pwa",
+  "background_color": "#8fcccb",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#8fcccb"
+}
