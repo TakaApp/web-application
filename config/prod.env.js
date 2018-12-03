@@ -2,7 +2,7 @@
 
 module.exports = {
   NODE_ENV: '"production"',
-  API_URL: '"https://taka-api.aksels.io"',
-  VERSION: '"v1.4"',
+  API_URL: '"https://api.nantes.cool"',
+  VERSION: '"v1.7"',
   DEBUG: 'false',
 }
