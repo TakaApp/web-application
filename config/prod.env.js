@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 
 module.exports = {
   NODE_ENV: '"production"',
   API_URL: '"https://api.nantes.cool"',
-  VERSION: '"v1.7"',
+  VERSION: '"v1.8"',
   DEBUG: 'false',
-}
+};
