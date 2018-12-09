@@ -15,36 +15,34 @@ export default {
 </script>
 
 <style scoped>
+.text-container {
+  padding-top: 4px;
+}
+.text-container p {
+  margin: 0;
+}
 
-  .text-container {
-    padding-top: 4px;
-  }
-  .text-container p {
-    margin: 0;
-  }
+.direction-container {
+  display: flex;
+  flex-direction: row;
 
-  .direction-container {
-    display: flex;
-    flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
 
-    align-items: center;
-    justify-content: flex-start;
+  line-height: 1.5em;
+  height: 1.5em;
+}
 
-    line-height: 1.5em;
-    height: 1.5em;
-  }
+.icon {
+  width: 0.7rem;
+  background-image: url(../assets/icons/direction.png);
+  background-repeat: no-repeat;
 
-  .icon {
-    width: .7rem;
-    background-image: url(../assets/icons/direction.png);
-    background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
 
-    background-size: contain;
-    background-position: center center;
+  margin-right: 0.5rem;
 
-    margin-right: .5rem;
-
-    height: 1.5em;
-  }
-
+  height: 1.5em;
+}
 </style>

@@ -1,29 +1,27 @@
 <template>
   <div class="main-container">
     <div class="search-form">
-      <h1>nantes<small>.cool</small></h1>
+      <h1>nantes
+        <small>.cool</small>
+      </h1>
 
       <SearchForm
         ref="searchForm"
-
         :debug="debug"
         :onFromUpdate="onFromUpdate"
-
         @focusFromTo="focusFromTo"
         @blurFromTo="blurFromTo"
-
         :onToUpdate="onToUpdate"
-
         :timeParameter="timeParameter"
         v-on:onChangeTimeParameter="onChangeTimeParameter"
-
         :date="date"
         v-on:onChangeDate="onChangeDate"
-
         :time="time"
         v-on:onChangeTime="onChangeTime"
       />
-      <div v-if="loading"><small>Chargement...</small></div>
+      <div v-if="loading">
+        <small>Chargement...</small>
+      </div>
       <div class="results" v-if="!loading && !firstRun">
         <p v-if="results.length === 0">Aucun résultat (ง'̀-'́)ง</p>
 
@@ -48,7 +46,6 @@
 </template>
 
 <script>
-
 import debounce from 'lodash/debounce';
 import L from 'leaflet';
 import polyUtil from 'polyline-encoded';
@@ -63,7 +60,6 @@ import Itinerary from '@/organisms/Itinerary';
 import LegWalk from '@/components/LegWalk';
 import LegBus from '@/components/LegBus';
 import JourneySummary from '@/components/JourneySummary';
-
 
 export default {
   name: 'Home',
@@ -151,7 +147,7 @@ export default {
     toggleItinerary(index) {
       const newCollapsedState = {};
       const newState = !this.collapsed[index];
-      Object.keys(this.collapsed).forEach((key) => {
+      Object.keys(this.collapsed).forEach(key => {
         newCollapsedState[key] = true;
       });
       newCollapsedState[index] = newState;
@@ -198,9 +194,12 @@ export default {
           const latlngs = polyUtil.decode(leg.legGeometry.points);
 
           // eslint-disable-next-line
-          const color = leg.mode === 'WALK' ? '#3367D6' : (
-            leg.routeColor ? `#${leg.routeColor}` : 'green'
-          );
+          const color =
+            leg.mode === 'WALK'
+              ? '#3367D6'
+              : leg.routeColor
+              ? `#${leg.routeColor}`
+              : 'green';
           const dashArray = leg.mode === 'WALK' ? '1 12' : null;
 
           return [
@@ -224,7 +223,7 @@ export default {
             },
           ];
         });
-        combinedPolyLines.forEach((polyLines) => {
+        combinedPolyLines.forEach(polyLines => {
           trips.push({
             active: isActive,
             polyLines,
@@ -232,12 +231,11 @@ export default {
         });
       });
 
-
       this.trips = trips.sort(i => i.active);
     },
     /**
-    * Call the api for results
-    */
+     * Call the api for results
+     */
     async searchJourneys() {
       if (!this.to || !this.from) {
         return;
@@ -258,7 +256,10 @@ export default {
         extras.time = moment(this.time, 'HH:mm').format('hh:mma');
       }
 
-      if (this.timeParameter === 'leaveAt' || this.timeParameter === 'leaveNow') {
+      if (
+        this.timeParameter === 'leaveAt' ||
+        this.timeParameter === 'leaveNow'
+      ) {
         extras.arriveBy = 'false';
       } else {
         extras.arriveBy = 'true';
@@ -275,7 +276,7 @@ export default {
         this.getTrip(0);
 
         this.collapsed = {};
-        Object.keys(this.results).forEach((key) => {
+        Object.keys(this.results).forEach(key => {
           this.collapsed[key] = true;
         });
         this.collapsed[0] = false;
@@ -317,10 +318,9 @@ export default {
 </script>
 
 <style scoped>
-
 h1 {
   font-size: 2rem;
-  margin: .5rem 0;
+  margin: 0.5rem 0;
 }
 small {
   font-size: 1rem;
@@ -357,5 +357,4 @@ small {
     width: 100%;
   }
 }
-
 </style>

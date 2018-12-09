@@ -1,23 +1,17 @@
 <template>
-  <button v-on:click="onClick">
-    {{label}}
-  </button>
+  <button v-on:click="onClick">{{label}}</button>
 </template>
 
 <script>
 export default {
   name: 'MyButton',
-  props: [
-    'label',
-    'onClick',
-  ],
+  props: ['label', 'onClick'],
 };
 </script>
 
 <style scoped>
-
 button {
-  padding: .5rem .25rem;
+  padding: 0.5rem 0.25rem;
   background-color: #8fcccb;
   color: rgba(255, 255, 255, 1);
   font-size: 1rem;
@@ -35,6 +29,4 @@ button:focus {
 button:active {
   box-shadow: none;
 }
-
-
 </style>

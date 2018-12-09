@@ -16,27 +16,32 @@
               backgroundColor: `#${leg.routeColor}`,
               color: `#${leg.routeTextColor}`,
             }"
-          >
-            {{leg.route}}
-          </div>
+          >{{leg.route}}</div>
         </div>
       </div>
-      <div class="line" />
-      <div class="end-time"><Hour :data="leg.endTime" /></div>
+      <div class="line"/>
+      <div class="end-time">
+        <Hour :data="leg.endTime"/>
+      </div>
     </div>
     <div class="leg-description from">
       <div v-if="index === 0" class="leg-description-item">
-        <b><Place :data="leg.from" /></b>
+        <b>
+          <Place :data="leg.from"/>
+        </b>
       </div>
       <div class="leg-description-item">
         <div>
-          <b><Direction :data="leg.headSign" /></b>
-          <div class="next-departures">
-            Prochains départs:
-            <Hour :data="leg.startTime" />
+          <b>
+            <Direction :data="leg.headSign"/>
+          </b>
+          <div class="next-departures">Prochains départs:
+            <Hour :data="leg.startTime"/>
           </div>
         </div>
-        <div><Duration :data="leg.duration" /></div>
+        <div>
+          <Duration :data="leg.duration"/>
+        </div>
       </div>
 
       <div class="leg-description-item stops">
@@ -44,14 +49,15 @@
       </div>
 
       <div class="leg-description-item">
-        <b><Place :data="leg.to" /></b>
+        <b>
+          <Place :data="leg.to"/>
+        </b>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'LegBus',
   props: ['leg', 'index', 'last', 'first'],
@@ -59,7 +65,6 @@ export default {
 </script>
 
 <style scoped>
-
 .line:after {
   content: '';
   height: 12px;
@@ -82,10 +87,10 @@ export default {
 }
 
 .from {
-  padding-top: .25rem;
+  padding-top: 0.25rem;
 }
 .next-departures {
-  font-size: .9rem;
+  font-size: 0.9rem;
   padding-left: 1.25rem;
 }
 
@@ -99,15 +104,15 @@ export default {
   align-content: center;
   justify-content: center;
   align-items: center;
-  margin-top: .6rem;
+  margin-top: 0.6rem;
 }
 .bus-number-container {
   min-width: 1.25rem;
   margin-left: 2px;
 }
 .bus-number {
-  margin-right: .5rem;
-  padding: .5rem;
+  margin-right: 0.5rem;
+  padding: 0.5rem;
   line-height: 1rem;
   width: 1.25rem;
 }

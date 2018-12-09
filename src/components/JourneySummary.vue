@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="journey-summary"
-    v-bind:class="{ selected }"
-  >
+  <div class="journey-summary" v-bind:class="{ selected }">
     <div class="journey-departure">
       <div v-if="getMinutesLeftBeforeStart() <= 90" class="journey-departure-label">Départ dans</div>
       <div v-if="getMinutesLeftBeforeStart() <= 90" class="departure-minutes-left-container">
@@ -20,7 +17,9 @@
           <div>&nbsp;—&nbsp;</div>
           <div>{{moment(itinerary.endTime).format('HH:mm')}}</div>
         </div>
-        <div class="duration"><Duration :data="itinerary.duration" /></div>
+        <div class="duration">
+          <Duration :data="itinerary.duration"/>
+        </div>
       </div>
     </div>
   </div>
@@ -32,17 +31,17 @@ export default {
   props: ['itinerary', 'selected'],
   methods: {
     getMinutesLeftBeforeStart() {
-      const diffInMs = Math.abs(new Date() - new Date(this.itinerary.startTime));
+      const diffInMs = Math.abs(
+        new Date() - new Date(this.itinerary.startTime),
+      );
       const diffInS = Math.round(diffInMs / 1000 / 60);
       return diffInS;
     },
-
   },
 };
 </script>
 
 <style scoped>
-
 .journey-start-n-end-time {
   display: flex;
 }
@@ -51,7 +50,7 @@ export default {
   background-color: #4c4177;
   background-image: linear-gradient(315deg, #4c4177 0%, #2a5470 74%);
 
-  color: #FFFFFFFA;
+  color: #fffffffa;
 
   display: flex;
   flex-direction: row;
@@ -81,11 +80,11 @@ export default {
   width: 100%;
 }
 .journee-duration-label {
-  margin-right: .5rem;
+  margin-right: 0.5rem;
 }
 
 .dot {
-  margin: 0 .5rem;
+  margin: 0 0.5rem;
 }
 
 .duration {
@@ -112,5 +111,4 @@ export default {
 
   align-items: baseline;
 }
-
 </style>

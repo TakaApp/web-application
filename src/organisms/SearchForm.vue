@@ -1,6 +1,5 @@
 <template>
   <div class="search-form-container">
-
     <div class="from-to-inputs">
       <LocationAutocompleteInput
         id="from"
@@ -28,9 +27,9 @@
             :value="timeParameter"
             @input="value => { $emit('onChangeTimeParameter', value) }"
           >
-            <el-option value="leaveNow" label="Partir maintenant" />
-            <el-option value="leaveAt" label="Partir à" />
-            <el-option value="arriveAt" label="Arriver à" />
+            <el-option value="leaveNow" label="Partir maintenant"/>
+            <el-option value="leaveAt" label="Partir à"/>
+            <el-option value="arriveAt" label="Arriver à"/>
           </el-select>
         </div>
       </div>
@@ -59,13 +58,8 @@
     </div>
 
     <div v-if="dev" class="button-container">
-      <MyButton
-        :onClick="debug"
-        label="Rechercher"
-        style="margin-top: .5rem"
-      />
+      <MyButton :onClick="debug" label="Rechercher" style="margin-top: .5rem"/>
     </div>
-
   </div>
 </template>
 
@@ -98,10 +92,10 @@ export default {
   },
   methods: {
     /**
-    * When the location is found
-    * @param {Object} addressData Data of the found location
-    * @param {String} id Input container ID
-    */
+     * When the location is found
+     * @param {Object} addressData Data of the found location
+     * @param {String} id Input container ID
+     */
     getAddressData(addressData, id) {
       if (id === 'from') {
         this.onFromUpdate({
@@ -132,27 +126,28 @@ export default {
 </script>
 
 <style scoped>
-
 .search-form-container {
   display: flex;
   flex-direction: column;
 }
 
-.from-to-inputs, .options, .button-container {
-  padding: 8px .5rem;
+.from-to-inputs,
+.options,
+.button-container {
+  padding: 8px 0.5rem;
 }
 
 .options {
   display: flex;
   flex-direction: column;
-  width: calc(100% - .5rem - 6px);
+  width: calc(100% - 0.5rem - 6px);
 }
 
 .option-selector {
   flex: 1;
 }
 
-.options > div:only-child > .select  {
+.options > div:only-child > .select {
   margin-bottom: 0;
 }
 
@@ -160,7 +155,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-content: flex-start;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 .date-options {
@@ -168,7 +163,8 @@ export default {
   flex-direction: row;
   justify-content: space-between;
 }
-.date-picker, .hour-picker {
+.date-picker,
+.hour-picker {
   display: flex;
   flex: 1;
 }
@@ -183,6 +179,4 @@ export default {
   flex: 1;
   width: 100%;
 }
-
-
 </style>

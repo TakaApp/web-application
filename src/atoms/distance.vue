@@ -1,7 +1,5 @@
 <template>
-  <span>
-    {{distance(data)}}
-  </span>
+  <span>{{distance(data)}}</span>
 </template>
 
 <script>

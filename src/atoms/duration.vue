@@ -1,7 +1,5 @@
 <template>
-  <span class="duration">
-    {{duration(data)}}
-  </span>
+  <span class="duration">{{duration(data)}}</span>
 </template>
 
 <script>
@@ -9,7 +7,7 @@ export default {
   name: 'Duration',
   props: ['data'],
   methods: {
-    duration: (durationInSeconds) => {
+    duration: durationInSeconds => {
       const date = new Date(null);
       date.setSeconds(durationInSeconds);
       if (durationInSeconds <= 60) {
@@ -26,6 +24,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-
 </style>

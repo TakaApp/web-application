@@ -33,7 +33,6 @@
 </template>
 
 <script>
-
 import L from 'leaflet';
 import { LMap, LTileLayer, LMarker, LPolyline } from 'vue2-leaflet';
 
@@ -58,7 +57,8 @@ export default {
       // seems like a good value
       zoom: this.zoom || 13,
       // because we support the community
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>',
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>',
     };
   },
   methods: {
@@ -68,10 +68,10 @@ export default {
         this.trips.forEach(trip => {
           trip.polyLines.forEach(polyLine => {
             polyLine.latlngs.forEach(latlng => {
-              polyLinesLatLngs.push(L.latLng(latlng[0], latlng[1]))
-            })
+              polyLinesLatLngs.push(L.latLng(latlng[0], latlng[1]));
+            });
           });
-        })
+        });
         const bounds = L.latLngBounds([
           this.markers[0].latlng,
           this.markers[1].latlng,
@@ -79,9 +79,15 @@ export default {
         ]);
         this.$refs.map.mapObject.fitBounds(bounds);
       } else if (this.markers[0]) {
-        this.center = L.latLng(this.markers[0].latlng.lat, this.markers[0].latlng.lng);
+        this.center = L.latLng(
+          this.markers[0].latlng.lat,
+          this.markers[0].latlng.lng,
+        );
       } else if (this.markers[1]) {
-        this.center = L.latLng(this.markers[1].latlng.lat, this.markers[1].latlng.lng);
+        this.center = L.latLng(
+          this.markers[1].latlng.lat,
+          this.markers[1].latlng.lng,
+        );
       }
     },
   },
@@ -100,16 +106,15 @@ export default {
 </script>
 
 <style scoped>
-
 .search-form-container {
   display: flex;
   flex-direction: column;
 
-  padding: .25rem .5rem;
+  padding: 0.25rem 0.5rem;
 }
 
 .map {
-  background-color: #FFF;
+  background-color: #fff;
   height: 100vh;
   flex: 1;
   overflow-x: auto;
@@ -120,5 +125,4 @@ export default {
     display: none;
   }
 }
-
 </style>

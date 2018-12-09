@@ -29,28 +29,29 @@ import axios from 'axios';
 
 export default {
   name: 'LocationAutocompleteInput',
-  props: [
-    'id',
-    'placeholder',
-    'placechanged',
-  ],
+  props: ['id', 'placeholder', 'placechanged'],
   data() {
-    return ({
+    return {
       focused: false,
       inputData: '',
-    });
+    };
   },
   methods: {
     handleSelect(v) {
       this.inputData = v.name;
-      this.placechanged({
-        lat: v.lat,
-        lng: v.lng,
-      }, this.id);
+      this.placechanged(
+        {
+          lat: v.lat,
+          lng: v.lng,
+        },
+        this.id,
+      );
     },
     async querySearch(queryString, cb) {
       if (!queryString) return cb([]);
-      const requestResult = await axios.get(`${process.env.API_URL}/search-location/${queryString}`);
+      const requestResult = await axios.get(
+        `${process.env.API_URL}/search-location/${queryString}`,
+      );
       const data = requestResult.data;
 
       return cb(data || []);
@@ -71,14 +72,13 @@ export default {
 
 
 <style scoped>
-
 .styled-input {
   font-size: 16px !important;
   line-height: 16px !important;
 
   background-color: #ffffff !important;
   border-radius: 4px !important;
-  border: 1px solid #DBDBDB !important;
+  border: 1px solid #dbdbdb !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
   padding: 0px !important;
   display: table !important;
@@ -133,5 +133,4 @@ export default {
 input:focus {
   outline: none;
 }
-
 </style>

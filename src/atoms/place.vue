@@ -1,7 +1,5 @@
 <template>
-  <span>
-    {{name(data)}}
-  </span>
+  <span>{{name(data)}}</span>
 </template>
 
 <script>
@@ -9,7 +7,7 @@ export default {
   name: 'Place',
   props: ['data'],
   methods: {
-    name: (data) => {
+    name: data => {
       if (data.name.toLowerCase() === 'origin') {
         return 'Point de départ';
       }

@@ -1,10 +1,7 @@
 <template>
   <div class="itinerary">
     <div v-on:click="onClick()">
-      <JourneySummary
-        :itinerary="itinerary"
-        :selected="!collapsed"
-      />
+      <JourneySummary :itinerary="itinerary" :selected="!collapsed"/>
     </div>
     <div v-if="!collapsed" class="legs">
       <div v-for="(leg, index) in itinerary.legs" v-bind:key="leg.startTime">
@@ -35,7 +32,6 @@
 </template>
 
 <script>
-
 import LegWalk from '@/components/LegWalk';
 import LegBus from '@/components/LegBus';
 import LegTram from '@/components/LegTram';
@@ -45,11 +41,9 @@ export default {
   name: 'Home',
   props: ['itinerary', 'collapsed', 'onClick'],
   data() {
-    return {
-    };
+    return {};
   },
-  methods: {
-  },
+  methods: {},
   components: {
     LegWalk,
     LegBus,
@@ -60,9 +54,8 @@ export default {
 </script>
 
 <style scoped>
-
 .itinerary {
-  font-size: .8rem;
+  font-size: 0.8rem;
 
   text-align: center;
 
@@ -71,10 +64,10 @@ export default {
   max-width: 500px;
 
   margin: 0 auto;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 
   box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 .legs {
@@ -82,5 +75,4 @@ export default {
   margin: 0 auto;
   width: 100%;
 }
-
 </style>
