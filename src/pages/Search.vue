@@ -1,7 +1,17 @@
 <template>
   <div class="main-container">
     <div class="search-form">
-      <h1>nantes
+      <br />
+      <a href="https://apps.apple.com/fr/app/taka-nantes-cool/id1444373341" target="_blank">
+        <img src="/static/badge-download-on-the-app-store.svg" />
+      </a>
+      <br />
+      <a href="https://play.google.com/store/apps/details?id=com.akselsme.taka" target="_blank">
+        <img src="/static/badge-android.png" />
+      </a>
+
+      <h1>
+        nantes
         <small>.cool</small>
       </h1>
 
