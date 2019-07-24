@@ -43,6 +43,15 @@
           :onClick="() => toggleItinerary(index)"
         />
       </div>
+
+      <a
+        href="https://github.com/TakaApp"
+        target="_blank"
+        style="text-decoration:none;color:#424242;"
+      >
+        View on GitHub
+        <img src="/static/github.png" />
+      </a>
     </div>
 
     <MyMap
